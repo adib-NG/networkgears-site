@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #1769C0;
+      --blue-dark:  #1258A8;
+      --blue-light: #DBEAFE;
+      --blue-mid:   #60A5FA;
+      --cyan:       #06B6D4;
+      --cyan-light: #CFFAFE;
+      --dark:       #0D1526;
+      --dark-2:     #1A2440;
+      --text:       #1E293B;
+      --text-muted: #64748B;
+      --border:     #E2E8F0;
+      --light:      #F0F6FF;
+      --white:      #FFFFFF;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==============================
+       SECTION BASE
+    ============================== */
+    .section { padding: 92px 6%; }
+    .section-inner { max-width: 1160px; margin: 0 auto; }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+    .eyebrow.cyan { color: var(--cyan); }
+
+    h2.st {
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1px;
+      line-height: 1.12;
+      margin-bottom: 14px;
+    }
+    h2.st.white { color: white; }
+
+    p.sd {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 500px;
+      line-height: 1.75;
+      margin-bottom: 54px;
+    }
+    p.sd.light { color: rgba(255,255,255,0.65); }
+
+    /* ==============================
+       SERVICES
+    ============================== */
+    #services {
+      background: linear-gradient(160deg, #EFF6FF 0%, #F0F9FF 50%, #F8FAFC 100%);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .svc-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 26px 28px;
+      border: 1px solid rgba(226,232,240,0.8);
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .svc-card:hover {
+      box-shadow: 0 8px 32px rgba(23,105,192,0.1);
+      border-color: rgba(23,105,192,0.25);
+      transform: translateY(-2px);
+    }
+    .svc-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-light), var(--cyan-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .svc-icon svg {
+      width: 20px; height: 20px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .svc-text h3 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    .svc-text p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ==============================
+       GLOBAL REACH
+    ============================== */
+    #global {
+      background: var(--dark-2);
+      background-image:
+        radial-gradient(ellipse 70% 60% at 80% 50%, rgba(6,182,212,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 10% 40%, rgba(23,105,192,0.14) 0%, transparent 55%);
+      padding: 88px 6%;
+    }
+    .global-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .global-text h2 { color: white; margin-bottom: 16px; }
+    .global-text > p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.62);
+      line-height: 1.78;
+      margin-bottom: 40px;
+    }
+    .global-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .global-pillar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .global-pillar-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(6,182,212,0.14);
+      border: 1px solid rgba(6,182,212,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .global-pillar-icon svg {
+      width: 20px; height: 20px;
+      stroke: var(--cyan);
+      fill: none;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .global-pillar h4 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 3px;
+    }
+    .global-pillar p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .global-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .globe-wrap {
+      width: 320px;
+      height: 320px;
+      position: relative;
+    }
+    .globe-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(6,182,212,0.18);
+    }
+    .globe-ring:nth-child(1) { inset: 0; }
+    .globe-ring:nth-child(2) { inset: 30px; border-color: rgba(6,182,212,0.14); }
+    .globe-ring:nth-child(3) { inset: 60px; border-color: rgba(6,182,212,0.1); }
+    .globe-ring:nth-child(4) { inset: 90px; border-color: rgba(6,182,212,0.07); }
+    .globe-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,0.25), rgba(23,105,192,0.15));
+      border: 1px solid rgba(6,182,212,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .globe-center svg {
+      width: 44px; height: 44px;
+      stroke: var(--cyan);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.9;
+    }
+    .globe-dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      opacity: 0.6;
+    }
+    .globe-dot::before {
+      content: '';
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: white;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ==============================
+       WHY NETWORK GEARS
+    ============================== */
+    #why { background: var(--white); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px 72px;
+    }
+    .why-item { display: flex; gap: 20px; align-items: flex-start; }
+    .why-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue-light) 0%, rgba(6,182,212,0.12) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .why-icon svg {
+      width: 24px; height: 24px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .why-item h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .why-item p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.72;
+    }
+
+    /* ==============================
+       ENGAGEMENT MODEL
+    ============================== */
+    #engagement { background: var(--light); }
+
+    .engage-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .engage-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 22px;
+      text-align: center;
+    }
+    .engage-icon {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-light), rgba(6,182,212,0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .engage-icon svg {
+      width: 24px; height: 24px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .engage-card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .engage-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+    .engage-note {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ==============================
+       CONTACT SECTION
+    ============================== */
+    #contact {
+      background: var(--dark);
+      background-image:
+        radial-gradient(ellipse 70% 60% at 5% 40%, rgba(23,105,192,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 95% 70%, rgba(6,182,212,0.1) 0%, transparent 55%);
+      padding: 96px 6%;
+    }
+    .contact-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .contact-info h2 { color: white; margin-bottom: 16px; }
+    .contact-info > p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.78;
+      margin-bottom: 36px;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .contact-detail-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(23,105,192,0.2);
+      border: 1px solid rgba(23,105,192,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-detail-icon svg {
+      width: 18px; height: 18px;
+      stroke: var(--blue-mid);
+      fill: none;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .contact-detail h4 { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+    .contact-detail a, .contact-detail p {
+      font-size: 15px;
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .contact-detail a:hover { color: var(--cyan); }
+    .contact-form {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 36px 32px;
+    }
+    .contact-form h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 24px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 14px;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s, background 0.15s;
+      outline: none;
+      width: 100%;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+    .form-group select option { background: #1A2440; color: white; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: rgba(23,105,192,0.6);
+      background: rgba(255,255,255,0.09);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      margin-top: 4px;
+    }
+    .form-submit:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    footer {
+      background: #080F1E;
+      padding: 44px 6%;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-links {
+      display: flex;
+      list-style: none;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #4B5563;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: #94A3B8; }
+    .footer-copy { font-size: 13px; color: #374151; }
+    .logo-link { text-decoration: none; display: inline-flex; align-items: center; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .global-inner { grid-template-columns: 1fr; gap: 40px; }
+      .global-visual { display: none; }
+      .why-grid { grid-template-columns: 1fr; gap: 32px; }
+      .engage-grid { grid-template-columns: 1fr 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== SERVICES ===== -->
+<section id="services" class="section">
+  <div class="section-inner">
+    <div class="eyebrow">What We Do</div>
+    <h2 class="st">Services Built for Modern IT</h2>
+    <p class="sd">Covering every layer of your technology stack — from identity and networking to cloud, security, and automation.</p>
+
+    <div class="services-grid">
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Directory &amp; Identity</h3>
+          <p>SSO, MFA, and least-privilege access for hybrid and remote teams.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Infrastructure Engineering</h3>
+          <p>Resilient compute, storage, and networking for high availability and scale.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Network Design</h3>
+          <p>Zero Trust topologies, VPN, routing, and site-to-site redundancy.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>IT Modernization</h3>
+          <p>Legacy migration into automated, code-driven environments.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Cloud Migrations</h3>
+          <p>On-premises to cloud with scalable architecture and compliance alignment.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Device &amp; Endpoint Management</h3>
+          <p>Unified device onboarding, encryption, and compliance enforcement.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Security &amp; Compliance</h3>
+          <p>Secrets management, encryption, and monitoring for regulatory alignment.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Automation &amp; Monitoring</h3>
+          <p>Event-driven automation and centralized metrics to reduce downtime.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="svc-text">
+          <h3>Project Management</h3>
+          <p>Clear milestones, coordinated delivery, and documented handoffs.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== GLOBAL REACH ===== -->
+<section id="global">
+  <div class="global-inner">
+
+    <div class="global-text">
+      <div class="eyebrow cyan">Global Reach</div>
+      <h2 class="st white">Infrastructure expertise,<br>delivered worldwide</h2>
+      <p>We support businesses operating across borders — managing multi-site environments, navigating global procurement, and ensuring technology continuity no matter where your teams are located.</p>
+
+      <div class="global-pillars">
+
+        <div class="global-pillar">
+          <div class="global-pillar-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div>
+            <h4>Global Logistics &amp; Procurement</h4>
+            <p>Hardware sourcing, vendor coordination, and supply chain management across multiple regions and time zones.</p>
+          </div>
+        </div>
+
+        <div class="global-pillar">
+          <div class="global-pillar-icon">
+            <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          </div>
+          <div>
+            <h4>Multi-Site Deployments</h4>
+            <p>Consistent, standardized rollouts across distributed offices, data centers, and remote locations worldwide.</p>
+          </div>
+        </div>
+
+        <div class="global-pillar">
+          <div class="global-pillar-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <h4>International Compliance &amp; Continuity</h4>
+            <p>Aligning operations with regional regulatory requirements and ensuring business continuity across all geographies.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Globe visual -->
+    <div class="global-visual">
+      <div class="globe-wrap">
+        <div class="globe-ring"></div>
+        <div class="globe-ring"></div>
+        <div class="globe-ring"></div>
+        <div class="globe-ring"></div>
+        <div class="globe-center">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div class="globe-dot" style="top:22%; left:28%;"></div>
+        <div class="globe-dot" style="top:35%; left:72%;"></div>
+        <div class="globe-dot" style="top:58%; left:18%;"></div>
+        <div class="globe-dot" style="top:65%; left:55%;"></div>
+        <div class="globe-dot" style="top:20%; left:58%;"></div>
+        <div class="globe-dot" style="top:72%; left:80%;"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 320 320">
+          <line x1="90" y1="70" x2="230" y2="112" stroke="rgba(6,182,212,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="90" y1="70" x2="58" y2="186" stroke="rgba(6,182,212,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="230" y1="112" x2="256" y2="230" stroke="rgba(6,182,212,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="58" y1="186" x2="176" y2="208" stroke="rgba(6,182,212,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="176" y1="208" x2="256" y2="230" stroke="rgba(6,182,212,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="186" y1="64" x2="230" y2="112" stroke="rgba(6,182,212,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== WHY NETWORK GEARS ===== -->
+<section id="why" class="section">
+  <div class="section-inner">
+    <div class="eyebrow">Why Network Gears</div>
+    <h2 class="st">Built for the way modern<br>businesses operate</h2>
+    <p class="sd">Technical depth combined with a practical, outcome-first approach — every engagement delivers results that last.</p>
+
+    <div class="why-grid">
+
+      <div class="why-item">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <div>
+          <h3>Outcome-Focused</h3>
+          <p>We measure success by yours — every engagement delivers documented, validated results your team can sustain long after we're done.</p>
+        </div>
+      </div>
+
+      <div class="why-item">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div>
+          <h3>Designed to Scale</h3>
+          <p>We build for where you're going, not just where you are. Every architecture is designed to grow with your business without a rebuild.</p>
+        </div>
+      </div>
+
+      <div class="why-item">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div>
+          <h3>Security by Design</h3>
+          <p>From Zero Trust to endpoint compliance, security is woven into every layer of every engagement — never bolted on afterward.</p>
+        </div>
+      </div>
+
+      <div class="why-item">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        </div>
+        <div>
+          <h3>Flexible Engagements</h3>
+          <p>Hourly advisory, fixed-scope projects, or ongoing managed services — we structure every engagement around your goals and budget.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== ENGAGEMENT MODEL ===== -->
+<section id="engagement" class="section">
+  <div class="section-inner">
+    <div class="eyebrow">How We Work</div>
+    <h2 class="st">Flexible Engagements.<br>Predictable Outcomes.</h2>
+    <p class="sd">Four models to fit your needs — from a targeted consultation to full ongoing operations.</p>
+
+    <div class="engage-grid">
+      <div class="engage-card">
+        <div class="engage-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Hourly Consulting</h3>
+        <p>Targeted support for specific challenges, advisory, or troubleshooting — focused expertise when you need it.</p>
+      </div>
+      <div class="engage-card">
+        <div class="engage-icon">
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3>Fixed-Scope Projects</h3>
+        <p>Clear deliverables, defined timelines, and outcome-based pricing for well-scoped initiatives.</p>
+      </div>
+      <div class="engage-card">
+        <div class="engage-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Managed Services</h3>
+        <p>Continuous monitoring, optimization, and operational oversight — your environment stays healthy, always.</p>
+      </div>
+      <div class="engage-card">
+        <div class="engage-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3>Service Packages</h3>
+        <p>Bundled automation and infrastructure services for continuous evolution at a predictable cost.</p>
+      </div>
+    </div>
+    <p class="engage-note">All engagements include documentation, validation, and operational continuity.</p>
+  </div>
+</section>
+
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="contact-inner">
+
+    <div class="contact-info">
+      <div class="eyebrow cyan">Get in Touch</div>
+      <h2 class="st white">Let's talk about<br>your infrastructure</h2>
+      <p>Have a project in mind, need a quick consultation, or just want to explore options? We'd love to hear from you.</p>
+
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <h4>Email Us</h4>
+          <a href="mailto:hello@networkgears.com">hello@networkgears.com</a>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="contact-detail-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div>
+          <h4>Response Time</h4>
+          <p>We typically respond within 1 business day</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Working contact form via FormSubmit.co -->
+    <div class="contact-form">
+      <h3>Send us a message</h3>
+      <form action="https://formsubmit.co/hello@networkgears.com" method="POST">
+        <input type="hidden" name="_subject" value="New inquiry from Network Gears website">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://networkgears.com/?sent=true">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" required>
+          </div>
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="Acme Corp">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@acme.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="service">Service of Interest</label>
+          <select id="service" name="service">
+            <option value="" disabled selected>Select a service…</option>
+            <option>Directory &amp; Identity Services</option>
+            <option>Infrastructure Engineering</option>
+            <option>Network Design</option>
+            <option>IT Modernization</option>
+            <option>Cloud Migrations</option>
+            <option>Device &amp; Endpoint Management</option>
+            <option>Security &amp; Compliance</option>
+            <option>Automation &amp; Monitoring</option>
+            <option>Global Logistics &amp; Procurement</option>
+            <option>Project Management</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us about your project, challenge, or what you're looking to accomplish…" required></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">Send Message →</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="logo-link">
+      <svg width="148" height="36" viewBox="0 0 148 36" xmlns="http://www.w3.org/2000/svg">
+        <path fill="white" fill-rule="evenodd" opacity="0.7"
+          d="M 31.8,15.6 L 31.8,20.4 L 27.4,19.6 L 25.8,23.4 L 29.5,26.0 L 26.0,29.5 L 23.4,25.8 L 19.6,27.4 L 20.4,31.8 L 15.6,31.8 L 16.4,27.4 L 12.6,25.8 L 10.0,29.5 L 6.5,26.0 L 10.2,23.4 L 8.7,19.6 L 4.2,20.4 L 4.2,15.6 L 8.7,16.4 L 10.2,12.6 L 6.5,10.0 L 10.0,6.5 L 12.6,10.2 L 16.4,8.7 L 15.6,4.2 L 20.4,4.2 L 19.6,8.7 L 23.4,10.2 L 26.0,6.5 L 29.5,10.0 L 25.8,12.6 L 27.4,16.4 Z
+          M 22.1,18 A 4.1,4.1 0 1,0 13.9,18 A 4.1,4.1 0 1,0 22.1,18 Z"/>
+        <line x1="36" y1="7" x2="36" y2="29" stroke="white" stroke-width="1.2" stroke-opacity="0.2"/>
+        <text x="44" y="19" font-family="Inter, sans-serif" font-weight="800" font-size="11.5" fill="white" opacity="0.65" letter-spacing="2">NETWORK</text>
+        <text x="44" y="30" font-family="Inter, sans-serif" font-weight="800" font-size="11.5" fill="white" opacity="0.65" letter-spacing="2">GEARS</text>
+      </svg>
+    </a>
+
+    <ul class="footer-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#global">Global Reach</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#engagement">How We Work</a></li>
+      <li><a href="mailto:hello@networkgears.com">hello@networkgears.com</a></li>
+    </ul>
+
+    <p class="footer-copy">&copy; 2026 Network Gears. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
