@@ -755,12 +755,97 @@
     .hero-visual { display: none; }
     .hero-stats { gap: 24px; }
   }
+
+  /* ==============================
+     PARTICLE CANVAS
+  ============================== */
+  #hero { position: relative; overflow: hidden; }
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-inner { position: relative; z-index: 1; }
+
+  /* ==============================
+     SCROLL REVEAL
+  ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.revealed { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.05s; }
+  .reveal-d2 { transition-delay: 0.12s; }
+  .reveal-d3 { transition-delay: 0.19s; }
+  .reveal-d4 { transition-delay: 0.26s; }
+  .reveal-d5 { transition-delay: 0.33s; }
+  .reveal-d6 { transition-delay: 0.40s; }
+  .reveal-d7 { transition-delay: 0.47s; }
+  .reveal-d8 { transition-delay: 0.54s; }
+  .reveal-d9 { transition-delay: 0.61s; }
+
+  /* ==============================
+     PHOTO BANNER
+  ============================== */
+  .photo-banner {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo-banner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+    filter: brightness(0.75) saturate(0.9);
+  }
+  .photo-banner-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg,
+      rgba(13,21,38,0.82) 0%,
+      rgba(23,105,192,0.28) 50%,
+      rgba(6,182,212,0.15) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo-banner-content {
+    text-align: center;
+    max-width: 680px;
+    padding: 0 32px;
+  }
+  .photo-banner-content h2 {
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    color: white;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .photo-banner-content h2 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #60A5FA, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .photo-banner-content p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.70);
+    line-height: 1.72;
+  }
   </style>
 </head>
 <body>
 
 <!-- ===== HERO ===== -->
 <section id="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-logo">
@@ -796,16 +881,20 @@
       </div>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num">9+</div>
-          <div class="hero-stat-label">Service Areas</div>
+          <div class="hero-stat-num" data-count="4" data-suffix=" yrs">4 yrs</div>
+          <div class="hero-stat-label">In Business</div>
         </div>
         <div>
-          <div class="hero-stat-num">4</div>
-          <div class="hero-stat-label">Engagement Models</div>
+          <div class="hero-stat-num" data-count="80" data-suffix="+">80+</div>
+          <div class="hero-stat-label">Clients Served</div>
         </div>
         <div>
-          <div class="hero-stat-num">Global</div>
-          <div class="hero-stat-label">Reach</div>
+          <div class="hero-stat-num" data-count="45">45</div>
+          <div class="hero-stat-label">Countries</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">1:1</div>
+          <div class="hero-stat-label">Dedicated Support</div>
         </div>
       </div>
     </div>
@@ -869,7 +958,7 @@
 
     <div class="services-grid">
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d1">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
@@ -879,7 +968,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d2">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
         </div>
@@ -889,7 +978,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d3">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </div>
@@ -899,7 +988,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d4">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </div>
@@ -909,7 +998,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d5">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
         </div>
@@ -919,7 +1008,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d6">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
@@ -929,7 +1018,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d7">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
@@ -939,7 +1028,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d8">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
@@ -949,7 +1038,7 @@
         </div>
       </div>
 
-      <div class="svc-card">
+      <div class="svc-card reveal reveal-d9">
         <div class="svc-icon">
           <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
@@ -963,6 +1052,21 @@
   </div>
 </section>
 
+
+<!-- ===== PHOTO BANNER ===== -->
+<div class="photo-banner reveal">
+  <img
+    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80&auto=format&fit=crop"
+    alt="Modern data center infrastructure"
+    loading="lazy"
+  >
+  <div class="photo-banner-overlay">
+    <div class="photo-banner-content">
+      <h2>Enterprise-grade infrastructure,<br>built to <em>last</em>.</h2>
+      <p>From network architecture to cloud migration — we handle the complexity so your team can focus on what matters.</p>
+    </div>
+  </div>
+</div>
 
 <!-- ===== GLOBAL REACH ===== -->
 <section id="global">
@@ -1052,7 +1156,7 @@
 
     <div class="why-grid">
 
-      <div class="why-item">
+      <div class="why-item reveal reveal-d1">
         <div class="why-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         </div>
@@ -1062,7 +1166,7 @@
         </div>
       </div>
 
-      <div class="why-item">
+      <div class="why-item reveal reveal-d2">
         <div class="why-icon">
           <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         </div>
@@ -1072,7 +1176,7 @@
         </div>
       </div>
 
-      <div class="why-item">
+      <div class="why-item reveal reveal-d3">
         <div class="why-icon">
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
         </div>
@@ -1082,7 +1186,7 @@
         </div>
       </div>
 
-      <div class="why-item">
+      <div class="why-item reveal reveal-d4">
         <div class="why-icon">
           <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
         </div>
@@ -1105,28 +1209,28 @@
     <p class="sd">Four models to fit your needs — from a targeted consultation to full ongoing operations.</p>
 
     <div class="engage-grid">
-      <div class="engage-card">
+      <div class="engage-card reveal reveal-d1">
         <div class="engage-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <h3>Hourly Consulting</h3>
         <p>Targeted support for specific challenges, advisory, or troubleshooting — focused expertise when you need it.</p>
       </div>
-      <div class="engage-card">
+      <div class="engage-card reveal reveal-d2">
         <div class="engage-icon">
           <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
         <h3>Fixed-Scope Projects</h3>
         <p>Clear deliverables, defined timelines, and outcome-based pricing for well-scoped initiatives.</p>
       </div>
-      <div class="engage-card">
+      <div class="engage-card reveal reveal-d3">
         <div class="engage-icon">
           <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
         <h3>Managed Services</h3>
         <p>Continuous monitoring, optimization, and operational oversight — your environment stays healthy, always.</p>
       </div>
-      <div class="engage-card">
+      <div class="engage-card reveal reveal-d4">
         <div class="engage-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
         </div>
@@ -1258,5 +1362,111 @@
   </div>
 </footer>
 
+<script>
+/* ============================================================
+   1. PARTICLE NETWORK — hero background
+   ============================================================ */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles;
+  const COUNT = 60, MAX_DIST = 140;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function mkParticle() {
+    return {
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r:  Math.random() * 1.8 + 0.8
+    };
+  }
+
+  function init() { resize(); particles = Array.from({ length: COUNT }, mkParticle); }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < MAX_DIST) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(96,165,250,${0.22 * (1 - d / MAX_DIST)})`;
+          ctx.lineWidth = 0.8;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(96,165,250,0.55)';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+})();
+
+/* ============================================================
+   2. SCROLL REVEAL
+   ============================================================ */
+(function () {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+/* ============================================================
+   3. COUNTER ANIMATION
+   ============================================================ */
+(function () {
+  const els = document.querySelectorAll('[data-count]');
+  if (!els.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el     = entry.target;
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      const dur    = 1800;
+      const start  = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3); // ease-out cubic
+        el.textContent = Math.round(e * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  els.forEach(el => observer.observe(el));
+})();
+</script>
 </body>
 </html>
