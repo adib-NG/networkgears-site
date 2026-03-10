@@ -1174,7 +1174,8 @@
       <h3>Send us a message</h3>
       <form action="https://formsubmit.co/hello@networkgears.com" method="POST">
         <input type="hidden" name="_subject" value="New inquiry from Network Gears website">
-        <input type="hidden" name="_captcha" value="false">
+        <!-- honeypot: bots fill this, humans don't -->
+        <input type="text" name="_honey" style="display:none">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_next" value="https://networkgears.com/?sent=true">
 
