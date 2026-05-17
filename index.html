@@ -626,10 +626,25 @@
   .hero-stat-num {
     font-size: 28px;
     font-weight: 800;
-    color: white;
     letter-spacing: -1px;
     line-height: 1;
     margin-bottom: 4px;
+    background: linear-gradient(120deg, #ffffff 0%, #ffffff 35%, #67E8F9 55%, #ffffff 75%, #ffffff 100%);
+    background-size: 220% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: statShimmer 6s ease-in-out infinite;
+  }
+  .hero-stats > div:nth-child(2) .hero-stat-num { animation-delay: 1.5s; }
+  .hero-stats > div:nth-child(3) .hero-stat-num { animation-delay: 3s; }
+  .hero-stats > div:nth-child(4) .hero-stat-num { animation-delay: 4.5s; }
+  @keyframes statShimmer {
+    0%   { background-position: 100% 0; }
+    50%  { background-position: 0% 0; }
+    100% { background-position: -100% 0; }
   }
   .hero-stat-label {
     font-size: 12px;
@@ -638,6 +653,14 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
+  .hero-stat-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+  }
+  .hero-stats > div { display: flex; flex-direction: column; align-items: flex-start; }
   .hero-visual {
     display: flex;
     align-items: center;
@@ -1201,16 +1224,17 @@
       </div>
       <div class="hero-stats">
         <div>
+          <div class="hero-stat-num" data-count="20" data-suffix="+ yrs">20+ yrs</div>
+          <div class="hero-stat-label">Industry Experience</div>
+          <div class="hero-stat-sub">4 yrs as Network Gears</div>
+        </div>
+        <div>
           <div class="hero-stat-num" data-count="80" data-suffix="+">80+</div>
           <div class="hero-stat-label">Businesses Supported</div>
         </div>
         <div>
           <div class="hero-stat-num" data-count="45">45</div>
           <div class="hero-stat-label">Countries Delivered</div>
-        </div>
-        <div>
-          <div class="hero-stat-num">Sr.</div>
-          <div class="hero-stat-label">Engineer-Led, Always</div>
         </div>
         <div>
           <div class="hero-stat-num">1:1</div>
@@ -1388,12 +1412,36 @@
         Google&nbsp;Workspace
       </span>
       <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M18 10a6 6 0 0 0-11.5-2A4.5 4.5 0 0 0 7 17h11a4 4 0 0 0 0-7z"/></svg>
+        AWS
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M6 19a4 4 0 0 1-.88-7.9 5 5 0 0 1 9.59-2.05A4.5 4.5 0 0 1 18 19H6z"/><path d="M9 13l2 2 4-4"/></svg>
+        Google&nbsp;Cloud
+      </span>
+      <span class="trust-logo">
         <svg viewBox="0 0 24 24"><path d="M2 16l3-3 4 4 7-7 6 6"/><path d="M2 20h20"/></svg>
         Cisco&nbsp;/&nbsp;Meraki
       </span>
       <span class="trust-logo">
-        <svg viewBox="0 0 24 24"><path d="M18 10a6 6 0 0 0-11.5-2A4.5 4.5 0 0 0 7 17h11a4 4 0 0 0 0-7z"/></svg>
-        AWS
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="5" rx="1"/><rect x="2" y="13" width="20" height="5" rx="1"/><circle cx="6" cy="8.5" r="0.7" fill="currentColor"/><circle cx="6" cy="15.5" r="0.7" fill="currentColor"/><line x1="10" y1="8.5" x2="18" y2="8.5"/><line x1="10" y1="15.5" x2="18" y2="15.5"/></svg>
+        Arista
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M5 13a7 7 0 0 1 14 0"/><path d="M8.5 14.5a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="17" r="1.3" fill="currentColor"/></svg>
+        Ubiquiti&nbsp;/&nbsp;UniFi
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><line x1="6.7" y1="7" x2="10.3" y2="10.5"/><line x1="17.3" y1="7" x2="13.7" y2="10.5"/><line x1="6.7" y1="17" x2="10.3" y2="13.5"/><line x1="17.3" y1="17" x2="13.7" y2="13.5"/></svg>
+        Tailscale
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/><line x1="4" y1="9" x2="2" y2="9"/><line x1="4" y1="15" x2="2" y2="15"/><line x1="22" y1="9" x2="20" y2="9"/><line x1="22" y1="15" x2="20" y2="15"/><line x1="9" y1="4" x2="9" y2="2"/><line x1="15" y1="4" x2="15" y2="2"/><line x1="9" y1="22" x2="9" y2="20"/><line x1="15" y1="22" x2="15" y2="20"/></svg>
+        NVIDIA
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="6.5" cy="7.5" r="0.6" fill="currentColor"/><circle cx="9" cy="7.5" r="0.6" fill="currentColor"/><line x1="6" y1="14" x2="14" y2="14"/><line x1="6" y1="16.5" x2="11" y2="16.5"/></svg>
+        Dell
       </span>
       <span class="trust-logo">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="18" x2="12" y2="20"/></svg>
