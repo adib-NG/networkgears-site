@@ -841,6 +841,183 @@
   }
 
   /* ==============================
+     TRUST STRIP
+  ============================== */
+  .trust-strip {
+    width: 100%;
+    padding: 56px 6% 64px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .trust-strip-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .trust-strip .eyebrow {
+    margin-bottom: 22px;
+  }
+  .trust-strip-heading {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+  }
+  .trust-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px 64px;
+    opacity: 0.78;
+  }
+  .trust-logo {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.3px;
+    color: var(--text-muted);
+    transition: color 0.2s, opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .trust-logo:hover { color: var(--text); }
+  .trust-logo svg {
+    width: 20px; height: 20px;
+    stroke: var(--text-muted);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  @media (max-width: 720px) {
+    .trust-logos { gap: 26px 40px; }
+    .trust-logo { font-size: 14px; }
+  }
+
+  /* ==============================
+     CTA BANNER (final)
+  ============================== */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--dark) 0%, #15264A 70%, #1F3567 100%);
+    padding: 78px 6%;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(6,182,212,0.18) 0%, transparent 45%),
+      radial-gradient(circle at 80% 50%, rgba(23,105,192,0.22) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .cta-banner-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .cta-banner-text .eyebrow {
+    color: var(--cyan);
+    margin-bottom: 14px;
+  }
+  .cta-banner-text h2 {
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.8px;
+    line-height: 1.18;
+    margin-bottom: 14px;
+  }
+  .cta-banner-text p {
+    font-size: 15.5px;
+    color: rgba(255,255,255,0.66);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+  .cta-banner-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 28px 26px 26px;
+    backdrop-filter: blur(6px);
+  }
+  .cta-banner-card-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .cta-banner-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 22px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cta-banner-card ul li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.78);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .cta-banner-card ul li svg {
+    width: 14px; height: 14px;
+    stroke: var(--cyan);
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .cta-banner-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--blue);
+    color: white;
+    font-size: 14.5px;
+    font-weight: 700;
+    padding: 13px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.15s;
+    border: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .cta-banner-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .cta-banner-btn svg {
+    width: 15px; height: 15px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  @media (max-width: 780px) {
+    .cta-banner-inner { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  /* ==============================
      TOP NAVIGATION
   ============================== */
   html { scroll-behavior: smooth; scroll-padding-top: 72px; }
@@ -1010,30 +1187,30 @@
           <span class="hero-logo-tagline">IT Infrastructure</span>
         </div>
       </div>
-      <h1>Modern IT Infrastructure<br>for <em>Ambitious</em> Businesses</h1>
-      <p>Expert-led services covering every layer of your technology stack — from identity and networking to cloud, security, and automation.</p>
+      <h1>Infrastructure your business<br>can <em>grow</em> on.</h1>
+      <p>Network Gears designs and runs the systems your business depends on — secured by default, documented for your team, and built to scale without a rebuild.</p>
       <div class="hero-ctas">
-        <a href="mailto:hello@networkgears.com" class="btn-primary">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Get in Touch
+        <a href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review" class="btn-primary">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Book a 30-min review
         </a>
         <a href="#services" class="btn-ghost">
-          Our Services
+          See what we do
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
         </a>
       </div>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num" data-count="4" data-suffix=" yrs">4 yrs</div>
-          <div class="hero-stat-label">In Business</div>
-        </div>
-        <div>
           <div class="hero-stat-num" data-count="80" data-suffix="+">80+</div>
-          <div class="hero-stat-label">Clients Served</div>
+          <div class="hero-stat-label">Businesses Supported</div>
         </div>
         <div>
           <div class="hero-stat-num" data-count="45">45</div>
-          <div class="hero-stat-label">Countries</div>
+          <div class="hero-stat-label">Countries Delivered</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">Sr.</div>
+          <div class="hero-stat-label">Engineer-Led, Always</div>
         </div>
         <div>
           <div class="hero-stat-num">1:1</div>
@@ -1196,17 +1373,40 @@
 </section>
 
 
-<!-- ===== PHOTO BANNER ===== -->
-<div class="photo-banner reveal">
-  <img
-    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80&auto=format&fit=crop"
-    alt="Modern data center infrastructure"
-    loading="lazy"
-  >
-  <div class="photo-banner-overlay">
-    <div class="photo-banner-content">
-      <h2>Enterprise-grade infrastructure,<br>built to <em>last</em>.</h2>
-      <p>From network architecture to cloud migration — we handle the complexity so your team can focus on what matters.</p>
+<!-- ===== TRUST STRIP ===== -->
+<div class="trust-strip reveal">
+  <div class="trust-strip-inner">
+    <div class="eyebrow">Trusted Technology Stack</div>
+    <div class="trust-strip-heading">We build on the platforms your business already relies on.</div>
+    <div class="trust-logos">
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
+        Microsoft&nbsp;365
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
+        Google&nbsp;Workspace
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M2 16l3-3 4 4 7-7 6 6"/><path d="M2 20h20"/></svg>
+        Cisco&nbsp;/&nbsp;Meraki
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M18 10a6 6 0 0 0-11.5-2A4.5 4.5 0 0 0 7 17h11a4 4 0 0 0 0-7z"/></svg>
+        AWS
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="18" x2="12" y2="20"/></svg>
+        Apple&nbsp;Business&nbsp;Manager
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Jamf
+      </span>
+      <span class="trust-logo">
+        <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><polyline points="21 4 21 12 13 12"/></svg>
+        Okta
+      </span>
     </div>
   </div>
 </div>
@@ -1294,8 +1494,8 @@
 <section id="why" class="section">
   <div class="section-inner">
     <div class="eyebrow">Why Network Gears</div>
-    <h2 class="st">Built for the way modern<br>businesses operate</h2>
-    <p class="sd">Technical depth combined with a practical, outcome-first approach — every engagement delivers results that last.</p>
+    <h2 class="st">What you actually get<br>from working with us</h2>
+    <p class="sd">Not a slogan — four concrete commitments that show up in every engagement.</p>
 
     <div class="why-grid">
 
@@ -1304,8 +1504,8 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         </div>
         <div>
-          <h3>Outcome-Focused</h3>
-          <p>We measure success by yours — every engagement delivers documented, validated results your team can sustain long after we're done.</p>
+          <h3>Engineering, not ticket-pushing</h3>
+          <p>You get senior infrastructure engineers — the same people who design the solution stay on through delivery and handoff. No L1 escalation theater.</p>
         </div>
       </div>
 
@@ -1314,8 +1514,8 @@
           <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         </div>
         <div>
-          <h3>Designed to Scale</h3>
-          <p>We build for where you're going, not just where you are. Every architecture is designed to grow with your business without a rebuild.</p>
+          <h3>Built to scale, not to bill</h3>
+          <p>Every architecture is sized for where you're going in three years — not the lock-in that maximizes our managed-service hours.</p>
         </div>
       </div>
 
@@ -1324,8 +1524,8 @@
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
         </div>
         <div>
-          <h3>Security by Design</h3>
-          <p>From Zero Trust to endpoint compliance, security is woven into every layer of every engagement — never bolted on afterward.</p>
+          <h3>Security baked into the design</h3>
+          <p>Zero Trust, MFA, least-privilege access, and encrypted endpoints aren't an upsell — they're the starting baseline of every project.</p>
         </div>
       </div>
 
@@ -1334,8 +1534,8 @@
           <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
         </div>
         <div>
-          <h3>Flexible Engagements</h3>
-          <p>Hourly advisory, fixed-scope projects, or ongoing managed services — we structure every engagement around your goals and budget.</p>
+          <h3>Documented for your team</h3>
+          <p>Every engagement closes with runbooks, network diagrams, and validated configs — so your team can operate what we build, not depend on us forever.</p>
         </div>
       </div>
 
@@ -1382,6 +1582,39 @@
       </div>
     </div>
     <p class="engage-note">All engagements include documentation, validation, and operational continuity.</p>
+  </div>
+</section>
+
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-banner reveal">
+  <div class="cta-banner-inner">
+    <div class="cta-banner-text">
+      <div class="eyebrow">Start Here</div>
+      <h2>Get a free 30-minute infrastructure review.</h2>
+      <p>No sales pitch. A working engineer reviews your current setup, calls out what's working and what isn't, and sends you a prioritized list of recommendations. If we're a fit for the work, we'll talk scope. If we're not, you keep the recommendations.</p>
+    </div>
+    <div class="cta-banner-card">
+      <div class="cta-banner-card-title">What you get</div>
+      <ul>
+        <li>
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          A 30-min working session, not a sales call
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Plain-English review of your current setup
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Prioritized recommendations, yours to keep
+        </li>
+      </ul>
+      <a href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review" class="cta-banner-btn">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email us to book
+      </a>
+    </div>
   </div>
 </section>
 
