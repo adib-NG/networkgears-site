@@ -1828,6 +1828,14 @@
   }, { threshold: 0.6 });
   els.forEach(el => observer.observe(el));
 })();
+  <!-- Quincer Chat Widget -->
+<script>
+  window.ChatWidgetConfig = {
+    apiKey: "cw_live_70f69f51dcefa7ce3a29ad36846ba20827e5ceb1ba27d32f",
+    apiUrl: "https://chat.quincer.com/api" // Uses default persona, or auto-detects from URL patterns
+  };
+</script>
+<script src="https://chat.quincer.com/api/embed/widget.js" defer></script>
 </script>
 </body>
 </html>
