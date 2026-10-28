@@ -78,6 +78,48 @@
     .btn-line:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
     .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+    /* ---------- spotlight cards ---------- */
+    .spot { position: relative; --mx: -999px; --my: -999px; }
+    .spot::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(260px circle at var(--mx) var(--my), rgba(34,211,238,0.14), transparent 60%); opacity: 0; transition: opacity .3s; }
+    .spot:hover::after { opacity: 1; }
+    .spot-b { position: relative; }
+    .spot-b::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: radial-gradient(220px circle at var(--mx) var(--my), rgba(34,211,238,0.9), transparent 60%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; opacity: 0; transition: opacity .3s; }
+    .spot-b:hover::before { opacity: 1; }
+    /* ---------- heading wipe ---------- */
+    .wipe { clip-path: inset(0 100% 0 0); transition: clip-path 1s cubic-bezier(.2,.8,.2,1); }
+    .wipe.in { clip-path: inset(0 0 0 0); }
+    .rise { opacity: 0; transform: translateY(16px); transition: opacity .7s ease .15s, transform .7s cubic-bezier(.2,.8,.2,1) .15s; }
+    .rise.in { opacity: 1; transform: none; }
+    /* ---------- magnetic ---------- */
+    .mag { will-change: transform; }
+    /* ---------- ambient blobs ---------- */
+    .blob { position: absolute; width: 60vw; height: 60vw; max-width: 720px; max-height: 720px; border-radius: 50%; filter: blur(90px); opacity: .35; pointer-events: none; animation: drift 22s ease-in-out infinite alternate; }
+    @keyframes drift { from { transform: translate(-6%, -4%) scale(1); } to { transform: translate(8%, 6%) scale(1.12); } }
+    /* ---------- marquee ---------- */
+    .marquee { position: relative; z-index: 1; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--ink); overflow: hidden; padding: 18px 0; -webkit-mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+    .marquee ul { display: flex; gap: 0; list-style: none; width: max-content; animation: slide 46s linear infinite; }
+    .marquee:hover ul { animation-play-state: paused; }
+    .marquee li { font-family: var(--mono); font-size: 13px; color: var(--fog-2); padding: 0 28px; white-space: nowrap; display: flex; align-items: center; gap: 28px; transition: color .2s; }
+    .marquee li::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); opacity: .6; }
+    .marquee li:hover { color: var(--white); }
+    @keyframes slide { to { transform: translateX(-50%); } }
+    /* ---------- 3D stack diagram ---------- */
+    .slabs { position: absolute; top: 28px; right: 34px; width: 150px; height: 150px; perspective: 700px; pointer-events: none; }
+    .slab { position: absolute; left: 15px; top: 15px; width: 120px; height: 120px; border-radius: 16px; border: 1px solid rgba(34,211,238,0.28); background: rgba(34,211,238,0.06); transform: rotateX(60deg) rotateZ(45deg) translateZ(var(--z)); transition: transform .5s cubic-bezier(.2,.8,.2,1), background .4s, border-color .4s, box-shadow .4s; }
+    .slab.on { background: rgba(34,211,238,0.55); border-color: var(--cyan); box-shadow: 0 0 30px rgba(34,211,238,0.5); transform: rotateX(60deg) rotateZ(45deg) translateZ(calc(var(--z) + 22px)); }
+    .detail { padding-right: clamp(24px, 3vw, 40px); }
+    .detail h3 { max-width: 15ch; }
+    /* ---------- why: vs animation ---------- */
+    .why .vs s { text-decoration: none; position: relative; }
+    .why .vs s::after { content: ''; position: absolute; left: 0; right: 0; top: 55%; height: 1.5px; background: #A33A3A; transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
+    .why:hover .vs s::after { transform: scaleX(1); }
+    .why .vs b { clip-path: inset(0 100% 0 0); transition: clip-path .4s ease .3s; }
+    .why:hover .vs b { clip-path: inset(0 0 0 0); }
+    .why .vs s { color: #A33A3A; }
+    /* ---------- nav active ---------- */
+    .links a.on { color: var(--white); }
+    .links a.on:not(.cta) { box-shadow: inset 0 -2px 0 var(--cyan); border-radius: 8px 8px 2px 2px; }
+
     /* ============================================================
        NAV
        ============================================================ */
@@ -244,7 +286,7 @@
     .cta p { margin: 22px auto 0; max-width: 56ch; font-size: clamp(16px, 1.3vw, 18px); }
     .cta .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 36px; }
     .cta .get { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; text-align: left; }
-    .cta .get div { padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(12,18,34,0.6); font-size: 14px; color: var(--fog); }
+    .cta .get div { padding: 18px; position: relative; border: 1px solid var(--line); border-radius: 12px; background: rgba(12,18,34,0.6); font-size: 14px; color: var(--fog); }
     .cta .get b { display: block; color: var(--white); font-weight: 600; margin-bottom: 4px; font-size: 14.5px; }
     .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); background: var(--white); color: var(--ink); font-weight: 600; font-size: 14px; padding: 12px 18px; border-radius: 10px; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 60; }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -287,6 +329,8 @@
       .seg .pill { display: none; }
       .seg button[aria-selected="true"] { background: var(--cyan); }
       .cta .get { grid-template-columns: 1fr; }
+      .slabs { display: none; }
+      .detail h3 { max-width: none; }
     }
     @media (max-width: 520px) {
       #hero { padding-top: 104px; min-height: auto; }
@@ -298,6 +342,8 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
       html { scroll-behavior: auto; }
       .hero-copy h1 .u::after { transform: scaleX(1); }
+      .wipe, .rise { clip-path: none; opacity: 1; transform: none; }
+      .marquee ul { animation: none; }
     }
   </style>
 </head>
@@ -333,11 +379,11 @@
       <h1>Infrastructure <span class="u">your team</span> can run without us.</h1>
       <p>Network Gears designs, builds, and hands off the identity, network, cloud, and endpoint systems your business depends on. Secured by default. Documented so your people own it.</p>
       <div class="hero-ctas">
-        <a class="btn btn-solid" href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review">
+        <a class="btn btn-solid mag" href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review">
           Book a free 30-minute review
           <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-line" href="#stack">See what we build</a>
+        <a class="btn btn-line mag" href="#stack">See what we build</a>
       </div>
       <div class="proof" aria-label="Experience">
         <div><b data-count="20" data-suffix="+">20+</b><span>years in infrastructure</span></div>
@@ -352,25 +398,32 @@
   </div>
 </header>
 
+<div class="marquee" aria-label="Platforms we build on">
+  <ul id="marquee">
+    <li>Microsoft 365</li><li>Google Workspace</li><li>AWS</li><li>Google Cloud</li><li>Cisco Meraki</li><li>Arista</li><li>Ubiquiti UniFi</li><li>Tailscale</li><li>NVIDIA</li><li>Dell</li><li>Apple Business Manager</li><li>Jamf</li><li>Okta</li><li>Cloudflare</li>
+  </ul>
+</div>
+
 <!-- STACK EXPLORER -->
 <section id="stack" class="section">
+  <div class="blob" style="background:#1d4ed8;top:-10%;right:-20%;"></div>
   <div class="wrap">
     <div class="stack-head">
       <div>
         <div class="kicker">What we build</div>
-        <h2>Every layer of the stack, designed to work as one.</h2>
-        <p class="lede">Pick a layer. Each one is something we design, build, and document, and each one is built to fit the layers around it.</p>
+        <h2 class="wipe">Every layer of the stack, designed to work as one.</h2>
+        <p class="lede rise">Pick a layer. Each one is something we design, build, and document, and each one is built to fit the layers around it.</p>
       </div>
       <div class="stack-hint" id="stack-hint">hover or tap a layer</div>
     </div>
 
     <div class="stack" id="stack-ui" role="tablist" aria-label="Infrastructure layers">
 
-      <button class="layer" role="tab" aria-selected="true" aria-controls="d-identity" id="t-identity">
+      <button class="layer spot" role="tab" aria-selected="true" aria-controls="d-identity" id="t-identity">
         <span class="ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
         <span><h3>Identity and access</h3><small>Who gets in, to what, from where</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail on" role="tabpanel" id="d-identity" aria-labelledby="t-identity">
+      <div class="detail spot-b on" role="tabpanel" id="d-identity" aria-labelledby="t-identity"><div class="slabs" aria-hidden="true"><div class="slab" style="--z:0px"></div><div class="slab" style="--z:13px"></div><div class="slab" style="--z:26px"></div><div class="slab on" style="--z:39px"></div><div class="slab" style="--z:52px"></div><div class="slab" style="--z:65px"></div><div class="slab" style="--z:78px"></div></div>
         <div class="tag">identity and access</div>
         <h3>One login, least privilege, no shared passwords.</h3>
         <p>We stand up a single identity provider, wire every app and device to it, and set access so people get exactly what their role needs. Offboarding becomes one click instead of a scavenger hunt.</p>
@@ -382,11 +435,11 @@
         <div class="tools"><span>Okta</span><span>JumpCloud</span><span>Google Workspace</span><span>Microsoft Entra</span></div>
       </div>
 
-      <button class="layer" role="tab" aria-selected="false" aria-controls="d-network" id="t-network">
+      <button class="layer spot" role="tab" aria-selected="false" aria-controls="d-network" id="t-network">
         <span class="ic"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
         <span><h3>Network design</h3><small>Zero Trust, segmentation, site-to-site</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail" role="tabpanel" id="d-network" aria-labelledby="t-network">
+      <div class="detail spot-b" role="tabpanel" id="d-network" aria-labelledby="t-network"><div class="slabs" aria-hidden="true"><div class="slab" style="--z:0px"></div><div class="slab on" style="--z:13px"></div><div class="slab" style="--z:26px"></div><div class="slab" style="--z:39px"></div><div class="slab" style="--z:52px"></div><div class="slab" style="--z:65px"></div><div class="slab" style="--z:78px"></div></div>
         <div class="tag">network design</div>
         <h3>Networks that assume nothing and still stay simple.</h3>
         <p>Flat networks are how one infected laptop becomes a company-wide incident. We design segmented, Zero Trust topologies with redundancy between sites, then document them so your team can change them with confidence.</p>
@@ -398,11 +451,11 @@
         <div class="tools"><span>Cisco Meraki</span><span>Arista</span><span>Ubiquiti</span><span>Tailscale</span></div>
       </div>
 
-      <button class="layer" role="tab" aria-selected="false" aria-controls="d-infra" id="t-infra">
+      <button class="layer spot" role="tab" aria-selected="false" aria-controls="d-infra" id="t-infra">
         <span class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></span>
         <span><h3>Compute and storage</h3><small>On-prem, colo, and hybrid</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail" role="tabpanel" id="d-infra" aria-labelledby="t-infra">
+      <div class="detail spot-b" role="tabpanel" id="d-infra" aria-labelledby="t-infra"><div class="slabs" aria-hidden="true"><div class="slab on" style="--z:0px"></div><div class="slab" style="--z:13px"></div><div class="slab" style="--z:26px"></div><div class="slab" style="--z:39px"></div><div class="slab" style="--z:52px"></div><div class="slab" style="--z:65px"></div><div class="slab" style="--z:78px"></div></div>
         <div class="tag">compute and storage</div>
         <h3>Hardware sized for where you will be in three years.</h3>
         <p>Servers, storage, racks, and power, specified and installed for high availability. We source hardware globally, build it, and leave you with a labeled rack and a diagram that matches it.</p>
@@ -414,11 +467,11 @@
         <div class="tools"><span>Dell</span><span>NVIDIA</span><span>Apple</span><span>Supermicro</span></div>
       </div>
 
-      <button class="layer" role="tab" aria-selected="false" aria-controls="d-cloud" id="t-cloud">
+      <button class="layer spot" role="tab" aria-selected="false" aria-controls="d-cloud" id="t-cloud">
         <span class="ic"><svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></span>
         <span><h3>Cloud and migration</h3><small>Move what should move, keep what should not</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail" role="tabpanel" id="d-cloud" aria-labelledby="t-cloud">
+      <div class="detail spot-b" role="tabpanel" id="d-cloud" aria-labelledby="t-cloud"><div class="slabs" aria-hidden="true"><div class="slab" style="--z:0px"></div><div class="slab" style="--z:13px"></div><div class="slab on" style="--z:26px"></div><div class="slab" style="--z:39px"></div><div class="slab" style="--z:52px"></div><div class="slab" style="--z:65px"></div><div class="slab" style="--z:78px"></div></div>
         <div class="tag">cloud and migration</div>
         <h3>Cloud where it earns its keep, nowhere else.</h3>
         <p>Not everything belongs in the cloud, and not everything belongs in a closet. We plan migrations workload by workload, with cost modeling up front and compliance requirements built into the architecture.</p>
@@ -430,11 +483,11 @@
         <div class="tools"><span>AWS</span><span>Google Cloud</span><span>Terraform</span><span>Cloudflare</span></div>
       </div>
 
-      <button class="layer" role="tab" aria-selected="false" aria-controls="d-endpoints" id="t-endpoints">
+      <button class="layer spot" role="tab" aria-selected="false" aria-controls="d-endpoints" id="t-endpoints">
         <span class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
         <span><h3>Devices and endpoints</h3><small>Every laptop enrolled, encrypted, current</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail" role="tabpanel" id="d-endpoints" aria-labelledby="t-endpoints">
+      <div class="detail spot-b" role="tabpanel" id="d-endpoints" aria-labelledby="t-endpoints"><div class="slabs" aria-hidden="true"><div class="slab" style="--z:0px"></div><div class="slab" style="--z:13px"></div><div class="slab" style="--z:26px"></div><div class="slab" style="--z:39px"></div><div class="slab on" style="--z:52px"></div><div class="slab" style="--z:65px"></div><div class="slab" style="--z:78px"></div></div>
         <div class="tag">devices and endpoints</div>
         <h3>A new hire opens the box and is working in twenty minutes.</h3>
         <p>Zero-touch enrollment means devices configure themselves from the moment they power on. Encryption, patching, and compliance are enforced by policy, not by reminders.</p>
@@ -446,11 +499,11 @@
         <div class="tools"><span>Jamf</span><span>Apple Business Manager</span><span>Intune</span><span>Kandji</span></div>
       </div>
 
-      <button class="layer" role="tab" aria-selected="false" aria-controls="d-security" id="t-security">
+      <button class="layer spot" role="tab" aria-selected="false" aria-controls="d-security" id="t-security">
         <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span>
         <span><h3>Security and compliance</h3><small>Baseline, not upsell</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail" role="tabpanel" id="d-security" aria-labelledby="t-security">
+      <div class="detail spot-b" role="tabpanel" id="d-security" aria-labelledby="t-security"><div class="slabs" aria-hidden="true"><div class="slab" style="--z:0px"></div><div class="slab" style="--z:13px"></div><div class="slab" style="--z:26px"></div><div class="slab" style="--z:39px"></div><div class="slab" style="--z:52px"></div><div class="slab on" style="--z:65px"></div><div class="slab" style="--z:78px"></div></div>
         <div class="tag">security and compliance</div>
         <h3>Security is how we build, not a line item we add.</h3>
         <p>Every layer above starts secure. On top of that we handle secrets, logging, and the evidence your auditors, insurers, and enterprise customers ask for.</p>
@@ -462,11 +515,11 @@
         <div class="tools"><span>CrowdStrike</span><span>1Password</span><span>Vanta</span><span>Cloudflare</span></div>
       </div>
 
-      <button class="layer" role="tab" aria-selected="false" aria-controls="d-ops" id="t-ops">
+      <button class="layer spot" role="tab" aria-selected="false" aria-controls="d-ops" id="t-ops">
         <span class="ic"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
         <span><h3>Automation and operations</h3><small>Monitoring, runbooks, handoff</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </button>
-      <div class="detail" role="tabpanel" id="d-ops" aria-labelledby="t-ops">
+      <div class="detail spot-b" role="tabpanel" id="d-ops" aria-labelledby="t-ops"><div class="slabs" aria-hidden="true"><div class="slab" style="--z:0px"></div><div class="slab" style="--z:13px"></div><div class="slab" style="--z:26px"></div><div class="slab" style="--z:39px"></div><div class="slab" style="--z:52px"></div><div class="slab" style="--z:65px"></div><div class="slab on" style="--z:78px"></div></div>
         <div class="tag">automation and operations</div>
         <h3>The part most firms skip: making it yours.</h3>
         <p>Every engagement ends with monitoring in place, repetitive work automated, and a runbook your team has actually used. We manage the environment if you want us to. You never have to.</p>
@@ -484,11 +537,12 @@
 
 <!-- GLOBE -->
 <section id="global" class="section">
+  <div class="blob" style="background:#0e7490;bottom:-20%;left:-25%;animation-delay:-8s;"></div>
   <div class="wrap globe-grid">
     <div>
       <div class="kicker">Where we work</div>
-      <h2>Based in Southern California. Delivered in 45 countries.</h2>
-      <p class="lede">Multi-site rollouts, hardware procurement across borders, and continuity planning for teams that do not all sit in one building. Drag the globe, or pick a city to see a route.</p>
+      <h2 class="wipe">Based in Southern California. Delivered in 45 countries.</h2>
+      <p class="lede rise">Multi-site rollouts, hardware procurement across borders, and continuity planning for teams that do not all sit in one building. Drag the globe, or pick a city to see a route.</p>
       <ul class="cities" id="cities" aria-label="Example delivery locations"></ul>
       <div class="pillars">
         <div class="pillar"><div><h4>Global procurement and logistics</h4><p>Hardware sourced, shipped, and cleared through customs to wherever the rack is going.</p></div></div>
@@ -504,25 +558,25 @@
 <section id="why" class="section">
   <div class="wrap">
     <div class="kicker">Why Network Gears</div>
-    <h2>What you get that you will not get from a managed service contract.</h2>
-    <p class="lede">Four commitments, and the practice they replace.</p>
+    <h2 class="wipe">What you get that you will not get from a managed service contract.</h2>
+    <p class="lede rise">Four commitments, and the practice they replace.</p>
     <div class="why-grid">
-      <div class="why">
+      <div class="why spot">
         <h3>Senior engineers, start to finish</h3>
         <p>The person who designs your environment is the person who builds it and hands it off. No account manager in between, no escalation ladder.</p>
         <div class="vs"><s>L1 ticket queue</s><b>engineer on the call</b></div>
       </div>
-      <div class="why">
+      <div class="why spot">
         <h3>Sized for three years out</h3>
         <p>Every architecture is designed for where your company is going, not for the configuration that maximizes our monthly hours.</p>
         <div class="vs"><s>rebuild in 18 months</s><b>grow into it</b></div>
       </div>
-      <div class="why">
+      <div class="why spot">
         <h3>Secure from the first diagram</h3>
         <p>Zero Trust, MFA, least privilege, and encrypted endpoints are the baseline of every project, not a security add-on quoted later.</p>
         <div class="vs"><s>security upsell</s><b>built in</b></div>
       </div>
-      <div class="why">
+      <div class="why spot">
         <h3>Documented so you own it</h3>
         <p>Runbooks, network diagrams, and validated configs come with every engagement. Your team can operate what we built. Staying with us is a choice, not a dependency.</p>
         <div class="vs"><s>vendor lock-in</s><b>your runbook</b></div>
@@ -533,10 +587,11 @@
 
 <!-- HOW WE WORK -->
 <section id="how" class="section">
+  <div class="blob" style="background:#1d4ed8;top:-15%;left:-20%;animation-delay:-14s;"></div>
   <div class="wrap">
     <div class="kicker">How we work</div>
-    <h2>Four ways to engage. Pick the one that fits the problem.</h2>
-    <p class="lede">Every model includes documentation, validation, and a clean handoff. The difference is scope and how you pay.</p>
+    <h2 class="wipe">Four ways to engage. Pick the one that fits the problem.</h2>
+    <p class="lede rise">Every model includes documentation, validation, and a clean handoff. The difference is scope and how you pay.</p>
 
     <div class="seg" role="tablist" aria-label="Engagement models" id="seg">
       <div class="pill" aria-hidden="true"></div>
@@ -545,7 +600,7 @@
       <button role="tab" aria-selected="false" data-m="2">Managed services</button>
       <button role="tab" aria-selected="false" data-m="3">Service package</button>
     </div>
-    <div class="model" id="model" role="tabpanel">
+    <div class="model spot-b" id="model" role="tabpanel">
       <div id="model-main"></div>
       <div id="model-side"></div>
     </div>
@@ -556,19 +611,19 @@
 <!-- CTA -->
 <section id="contact" class="section">
   <div class="wrap cta">
-    <h2>Start with a free 30&#8209;minute infrastructure review.</h2>
+    <h2 class="wipe">Start with a free 30&#8209;minute infrastructure review.</h2>
     <p>No pitch. A working engineer looks at your current setup, tells you in plain English what is solid and what is not, and sends you a prioritized list of fixes. If we are a fit for the work, we talk scope. If not, the list is yours.</p>
     <div class="row">
-      <a class="btn btn-solid" href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review">
+      <a class="btn btn-solid mag" href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review">
         Email hello@networkgears.com
         <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
       </a>
-      <button class="btn btn-line" id="copy" type="button">Copy address</button>
+      <button class="btn btn-line mag" id="copy" type="button">Copy address</button>
     </div>
     <div class="get">
-      <div><b>A working session</b>30 minutes with an engineer, not a sales call.</div>
-      <div><b>A plain-English read</b>What is working, what is fragile, what is risky.</div>
-      <div><b>A prioritized list</b>Recommendations in order, yours to keep.</div>
+      <div class="spot"><b>A working session</b>30 minutes with an engineer, not a sales call.</div>
+      <div class="spot"><b>A plain-English read</b>What is working, what is fragile, what is risky.</div>
+      <div class="spot"><b>A prioritized list</b>Recommendations in order, yours to keep.</div>
     </div>
   </div>
 </section>
@@ -616,7 +671,7 @@
   (function () {
     const c = $('#net'); if (!c) return;
     const ctx = c.getContext('2d');
-    let W, H, dpr, nodes = [], packets = [], running = true, last = 0;
+    let W, H, dpr, nodes = [], packets = [], ripples = [], running = true, last = 0;
     const ptr = { x: -9999, y: -9999, active: false };
     const mobile = () => window.innerWidth < 760;
 
@@ -674,6 +729,11 @@
         ctx.beginPath(); ctx.arc(x, y, 1.8, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
       }
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const k = ripples[i]; k.t += .02 * dt; if (k.t >= 1) { ripples.splice(i, 1); continue; }
+        ctx.strokeStyle = `rgba(34,211,238,${(0.6 * (1 - k.t)).toFixed(3)})`; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(k.x, k.y, 20 + k.t * 320, 0, Math.PI * 2); ctx.stroke();
+      }
       for (const p of nodes) {
         ctx.fillStyle = p.hub ? 'rgba(34,211,238,0.9)' : 'rgba(183,196,216,0.55)';
         ctx.beginPath(); ctx.arc(p.x, p.y, p.hub ? p.r + 1.2 : p.r, 0, Math.PI * 2); ctx.fill();
@@ -691,6 +751,13 @@
     const hero = $('#hero');
     hero.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top; ptr.active = true; });
     hero.addEventListener('pointerleave', () => { ptr.active = false; });
+    hero.addEventListener('pointerdown', e => {
+      if (e.target.closest('a, button')) return;
+      const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      ripples.push({ x, y, t: 0 });
+      for (const p of nodes) { const dx = p.x - x, dy = p.y - y, d = Math.hypot(dx, dy) || 1; if (d < 260) { const f = (1 - d / 260) * 4; p.vx += dx / d * f; p.vy += dy / d * f; } }
+      if (reduce) step(1);
+    });
     new IntersectionObserver(([en]) => { const was = running; running = en.isIntersecting; if (running && !was && !reduce) { last = performance.now(); requestAnimationFrame(loop); } }).observe(hero);
     last = performance.now();
     requestAnimationFrame(loop);
@@ -769,6 +836,8 @@
     function select(tab, scroll) {
       tabs.forEach(t => t.setAttribute('aria-selected', t === tab));
       panels.forEach(p => p.classList.toggle('on', p.id === tab.getAttribute('aria-controls')));
+      const key = tab.id.slice(2), order = ['infra','network','cloud','identity','endpoints','security','ops'];
+      panels.forEach(p => $$('.slab', p).forEach((sl, i) => sl.classList.toggle('on', order[i] === key)));
       if (hint) hint.textContent = (tabs.indexOf(tab) + 1) + ' of ' + tabs.length;
       if (scroll && isMobile()) setTimeout(() => { const r = tab.getBoundingClientRect(); if (r.top < 80) window.scrollBy({ top: r.top - 84, behavior: 'smooth' }); }, 50);
     }
@@ -793,14 +862,15 @@
       { name: 'São Paulo', lat: -23.55, lon: -46.63 }, { name: 'London', lat: 51.5, lon: -0.12 },
       { name: 'Frankfurt', lat: 50.11, lon: 8.68 }, { name: 'Dubai', lat: 25.2, lon: 55.27 },
       { name: 'Singapore', lat: 1.35, lon: 103.82 }, { name: 'Tokyo', lat: 35.68, lon: 139.69 },
-      { name: 'Sydney', lat: -33.87, lon: 151.21 }, { name: 'Nairobi', lat: -1.29, lon: 36.82 }
+      { name: 'Sydney', lat: -33.87, lon: 151.21 }
     ];
     const toV = (lat, lon) => { const a = lat * Math.PI / 180, b = lon * Math.PI / 180; return [Math.cos(a) * Math.sin(b), Math.sin(a), Math.cos(a) * Math.cos(b)]; };
     const dots = []; for (let la = -80; la <= 80; la += 8) for (let lo = -180; lo < 180; lo += 8) dots.push(toV(la, lo));
     const homeV = toV(HOME.lat, HOME.lon);
     const arcs = SITES.map(s => { const v = toV(s.lat, s.lon), pts = []; const om = Math.acos(Math.max(-1, Math.min(1, homeV[0] * v[0] + homeV[1] * v[1] + homeV[2] * v[2]))); for (let i = 0; i <= 40; i++) { const t = i / 40, A = Math.sin((1 - t) * om) / Math.sin(om), B = Math.sin(t * om) / Math.sin(om); const lift = 1 + Math.sin(t * Math.PI) * (0.03 + om * 0.045); pts.push([(A * homeV[0] + B * v[0]) * lift, (A * homeV[1] + B * v[1]) * lift, (A * homeV[2] + B * v[2]) * lift]); } return { site: s, v, pts, pulse: Math.random() }; });
 
-    let W, R, rotY = 2.05, rotX = 0.42, auto = true, drag = null, hover = -1, running = true, t0 = performance.now();
+    let W, R, rotY = 2.05, rotX = 0.42, auto = true, drag = null, hover = -1, idle = 0, running = true, t0 = performance.now();
+    if (!reduce) setInterval(() => { if (hover === -1 && auto) idle = (idle + 1) % SITES.length; }, 3200);
     function resize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); W = c.clientWidth; c.width = W * dpr; c.height = W * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); R = W * 0.42; }
     function proj(v) {
       const cy = Math.cos(rotY), sy = Math.sin(rotY), cx = Math.cos(rotX), sx = Math.sin(rotX);
@@ -821,15 +891,16 @@
       for (const d of dots) { const [x, y, z] = proj(d); if (z < 0) continue; ctx.fillStyle = `rgba(183,196,216,${(0.12 + z * 0.4).toFixed(2)})`; ctx.beginPath(); ctx.arc(x, y, 1.1 + z * 0.6, 0, Math.PI * 2); ctx.fill(); }
       // arcs
       arcs.forEach((a, i) => {
-        const on = hover === i || hover === -1;
+        const hi = hover !== -1 ? hover : (auto && !drag ? idle : -1);
+        const on = hi === i || hi === -1 || hover === -1;
         const P = a.pts.map(proj);
         ctx.beginPath(); let started = false;
         for (const [x, y, z] of P) { if (z < -0.15) { started = false; continue; } if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y); }
-        ctx.strokeStyle = hover === i ? 'rgba(34,211,238,0.95)' : `rgba(34,211,238,${on ? 0.32 : 0.08})`; ctx.lineWidth = hover === i ? 2 : 1.1; ctx.stroke();
+        ctx.strokeStyle = hi === i ? 'rgba(34,211,238,0.95)' : `rgba(34,211,238,${on ? 0.32 : 0.08})`; ctx.lineWidth = hi === i ? 2 : 1.1; ctx.stroke();
         // pulse
         if (!reduce) { const k = ((t * 0.22 + a.pulse) % 1), idx = Math.floor(k * 40), [x, y, z] = P[idx]; if (z > -0.15 && on) { ctx.fillStyle = '#F4F7FC'; ctx.shadowColor = 'rgba(34,211,238,0.9)'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; } }
         // endpoint
-        const [ex, ey, ez] = proj(a.v); if (ez > -0.05) { ctx.fillStyle = hover === i ? '#F4F7FC' : 'rgba(34,211,238,0.9)'; ctx.beginPath(); ctx.arc(ex, ey, hover === i ? 4 : 2.6, 0, Math.PI * 2); ctx.fill(); if (hover === i) { ctx.font = '500 12px JetBrains Mono, monospace'; ctx.fillStyle = '#F4F7FC'; ctx.fillText(a.site.name, ex + 9, ey + 4); } }
+        const [ex, ey, ez] = proj(a.v); if (ez > -0.05) { ctx.fillStyle = hi === i ? '#F4F7FC' : 'rgba(34,211,238,0.9)'; ctx.beginPath(); ctx.arc(ex, ey, hi === i ? 4 : 2.6, 0, Math.PI * 2); ctx.fill(); if (hi === i) { ctx.font = '500 12px JetBrains Mono, monospace'; ctx.fillStyle = '#F4F7FC'; ctx.fillText(a.site.name, ex + 9, ey + 4); } }
       });
       // home
       const [hx, hy, hz] = proj(homeV); if (hz > -0.05) { ctx.fillStyle = '#F4F7FC'; ctx.beginPath(); ctx.arc(hx, hy, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = 'rgba(34,211,238,0.6)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(hx, hy, 9 + (reduce ? 0 : Math.sin(t * 2.5) * 2), 0, Math.PI * 2); ctx.stroke(); ctx.font = '500 12px JetBrains Mono, monospace'; ctx.fillStyle = '#F4F7FC'; ctx.fillText('San Diego', hx + 12, hy + 4); }
@@ -874,6 +945,45 @@
     btns.forEach(b => b.addEventListener('click', () => show(+b.dataset.m)));
     seg.addEventListener('keydown', e => { const i = btns.findIndex(b => b.getAttribute('aria-selected') === 'true'); if (e.key === 'ArrowRight') { const n = (i + 1) % 4; btns[n].focus(); show(n); } if (e.key === 'ArrowLeft') { const n = (i + 3) % 4; btns[n].focus(); show(n); } });
     show(0);
+  })();
+
+  /* ---------- SPOTLIGHT + MAGNETIC ---------- */
+  (function () {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches; if (!fine) return;
+    document.addEventListener('pointermove', e => {
+      const t = e.target.closest('.spot, .spot-b'); if (!t) return;
+      const r = t.getBoundingClientRect(); t.style.setProperty('--mx', (e.clientX - r.left) + 'px'); t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+    if (reduce) return;
+    $$('.mag').forEach(b => {
+      b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); const x = (e.clientX - r.left - r.width / 2) * .18, y = (e.clientY - r.top - r.height / 2) * .28; b.style.transform = `translate(${x}px, ${y}px)`; });
+      b.addEventListener('pointerleave', () => { b.style.transform = ''; });
+    });
+  })();
+
+  /* ---------- WIPE + RISE on scroll ---------- */
+  (function () {
+    const els = $$('.wipe, .rise'); if (!els.length) return;
+    if (reduce) { els.forEach(e => e.classList.add('in')); return; }
+    // observe a sentinel just before the element: a clip-path'd element reports zero intersection
+    const io = new IntersectionObserver(en => en.forEach(e => { if (e.isIntersecting) { e.target._w.classList.add('in'); io.unobserve(e.target); e.target.remove(); } }), { rootMargin: '0px 0px -12% 0px' });
+    els.forEach(e => { const s = document.createElement('span'); s._w = e; s.style.cssText = 'display:block;height:1px;margin-top:-1px;'; e.parentNode.insertBefore(s, e); io.observe(s); });
+  })();
+
+  /* ---------- NAV active section ---------- */
+  (function () {
+    const links = $$('#links a[href^="#"]'); const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const io = new IntersectionObserver(en => en.forEach(e => { if (e.isIntersecting) { links.forEach(a => a.classList.remove('on')); const a = map.get(e.target.id); if (a) a.classList.add('on'); } }), { rootMargin: '-40% 0px -55% 0px' });
+    map.forEach((a, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+  })();
+
+  /* ---------- MARQUEE duplicate ---------- */
+  (function () { const ul = $('#marquee'); if (ul) ul.innerHTML += ul.innerHTML; })();
+
+  /* ---------- HERO parallax ---------- */
+  (function () {
+    if (reduce) return; const copy = $('.hero-copy'), term = $('.term'); if (!copy) return;
+    window.addEventListener('scroll', () => { const y = window.scrollY; if (y > window.innerHeight) return; copy.style.transform = `translateY(${y * .12}px)`; copy.style.opacity = 1 - y / (window.innerHeight * .9); term.style.transform = `translateY(${y * .05}px)`; }, { passive: true });
   })();
 
   /* ---------- COPY EMAIL ---------- */
