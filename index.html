@@ -167,14 +167,16 @@
     .cursor { display: inline-block; width: 7px; height: 13px; background: var(--cyan); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
     #term-in { position: absolute; opacity: 0; width: 1px; height: 1px; left: -9999px; }
-    .term-grip { position: absolute; left: 0; top: 0; width: 22px; height: 22px; cursor: nwse-resize; z-index: 3; }
-    .term-grip::before { content: ''; position: absolute; left: 6px; top: 6px; width: 9px; height: 9px; border-left: 2px solid var(--fog-2); border-top: 2px solid var(--fog-2); border-radius: 3px 0 0 0; opacity: .7; transition: opacity .2s, border-color .2s; }
-    .term-grip:hover::before, .term.resizing .term-grip::before { opacity: 1; border-color: var(--cyan); }
-    .term.resizing { transition: none; user-select: none; }
+    .t-size { display: inline-flex; gap: 2px; margin-left: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 2px; }
+    .t-size button { font-family: var(--mono); font-size: 10.5px; line-height: 1; padding: 4px 7px; border-radius: 4px; color: var(--fog-2); transition: background .15s, color .15s; }
+    .t-size button:hover { color: var(--white); }
+    .t-size button[aria-pressed="true"] { background: rgba(34,211,238,0.18); color: var(--cyan); }
+    .term { transition: width .35s cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .3s; }
+    .term-body { transition: height .35s cubic-bezier(.2,.8,.2,1); }
     .term-dock.max { z-index: 71; opacity: 1 !important; }
     .term.max { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(960px, 92vw) !important; height: min(660px, 86vh); z-index: 70; background: rgba(12,18,34,0.94); box-shadow: 0 40px 120px -20px rgba(0,0,0,0.9), 0 0 0 1px rgba(34,211,238,0.25); }
     .term.max .term-body { height: calc(100% - 41px) !important; font-size: 13.5px; }
-    .term.max .term-grip { display: none; }
+    .term.max .t-size { display: none; }
     .term.min .term-body { height: 0 !important; padding-top: 0; padding-bottom: 0; overflow: hidden; }
     .term-scrim { position: fixed; inset: 0; background: rgba(7,11,20,0.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); z-index: 69; opacity: 0; pointer-events: none; transition: opacity .3s; }
     .term-scrim.on { opacity: 1; pointer-events: auto; }
@@ -313,23 +315,26 @@
     #why h2, #why h3 { color: var(--ink-on-paper); }
     #why .kicker { color: var(--cyan-deep); } #why .kicker::before { background: var(--cyan-deep); }
     #why .lede { color: var(--muted-on-paper); }
-    .cmp { position: relative; margin-top: 44px; height: 300px; border-radius: 18px; overflow: hidden; border: 1px solid var(--paper-2); background: #fff; user-select: none; touch-action: pan-y; box-shadow: 0 24px 60px -40px rgba(14,21,38,0.4); }
-    .cmp-side { position: absolute; inset: 0; padding: clamp(22px, 3vw, 36px) clamp(22px, 4vw, 44px); display: grid; grid-template-rows: auto 1fr; gap: 14px; width: 50%; }
-    .cmp-b { left: auto; right: 0; }
-    .cmp-a { background: linear-gradient(135deg, #FBF6F4, #F6EDEA); color: #5B3B3B; }
-    .cmp-b { background: linear-gradient(135deg, #0C1222, #0E7490 160%); color: var(--white); }
-    .cmp-b-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0C1222, #0E7490 160%); clip-path: inset(0 0 0 50%); }
-    .cmp-b-bg .cmp-side { position: absolute; }
-    .cmp-side h4 { font-size: 13px; font-family: var(--mono); font-weight: 500; letter-spacing: .02em; }
-    .cmp-a h4 { color: #A33A3A; } .cmp-b h4 { color: var(--cyan); }
-    .cmp-side ul { list-style: none; display: grid; gap: 10px; align-content: start; }
-    .cmp-side li { font-size: clamp(14px, 1.3vw, 17px); font-weight: 500; display: flex; gap: 12px; align-items: center; }
-    .cmp-side li svg { width: 18px; height: 18px; flex: none; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .cmp-a li svg { stroke: #A33A3A; } .cmp-b li svg { stroke: var(--cyan); }
-    .cmp-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--white); box-shadow: 0 0 0 1px rgba(14,21,38,0.15); pointer-events: none; }
-    .cmp-handle::after { content: '\2194'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; background: var(--white); color: var(--ink-on-paper); display: grid; place-items: center; font-size: 18px; box-shadow: 0 8px 24px -8px rgba(14,21,38,0.5); }
-    .cmp-range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
-    .cmp-hint { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); font-family: var(--mono); font-size: 11px; color: var(--muted-on-paper); background: rgba(255,255,255,0.85); padding: 4px 10px; border-radius: 999px; pointer-events: none; mix-blend-mode: normal; }
+    .flip { margin-top: 40px; }
+    .flip-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .flip-hint { font-family: var(--mono); font-size: 12px; color: var(--muted-on-paper); }
+    .flip-sw { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--paper-2); position: relative; }
+    .flip-sw button { position: relative; z-index: 1; font-size: 13.5px; font-weight: 500; padding: 9px 16px; border-radius: 999px; color: var(--muted-on-paper); transition: color .25s; }
+    .flip-sw button[aria-selected="true"] { color: var(--white); }
+    .flip-sw .knob { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: var(--ink-on-paper); transition: transform .4s cubic-bezier(.2,.8,.2,1), background .4s; }
+    .flip-sw.b .knob { transform: translateX(100%); background: var(--cyan-deep); }
+    .flip-list { list-style: none; display: grid; gap: 10px; }
+    .flip-row { perspective: 1200px; height: 68px; }
+    .flip-in { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .65s cubic-bezier(.2,.8,.2,1); cursor: pointer; }
+    .flip-row.on .flip-in { transform: rotateX(180deg); }
+    .face { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 14px; display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 14px; padding: 0 20px 0 14px; font-size: clamp(14px, 1.3vw, 17px); font-weight: 500; border: 1px solid transparent; }
+    .face svg { width: 20px; height: 20px; justify-self: center; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .face small { font-family: var(--mono); font-size: 11px; font-weight: 400; opacity: .7; }
+    .fa { background: #fff; border-color: var(--paper-2); color: #5B3B3B; }
+    .fa svg { stroke: #A33A3A; }
+    .fb { background: linear-gradient(90deg, #0C1222, #0E3A4F); color: var(--white); transform: rotateX(180deg); border-color: rgba(34,211,238,0.3); }
+    .fb svg { stroke: var(--cyan); }
+    .fb small { color: var(--cyan); opacity: 1; }
     .why-grid { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .why { background: #fff; border: 1px solid var(--paper-2); border-radius: 16px; padding: clamp(24px, 3vw, 40px); position: relative; box-shadow: 0 1px 0 rgba(14,21,38,0.03); }
     .why:hover { z-index: 2; box-shadow: 0 24px 50px -30px rgba(14,21,38,0.35); }
@@ -408,7 +413,6 @@
       .hero-copy { max-width: 600px; }
       .term-dock { position: static; display: block; margin-top: 40px; pointer-events: auto; }
       .term { width: 100% !important; max-width: 600px; }
-      .term-grip { display: none; }
       .hero-hint, .hero-shape { display: none; }
       .globe-grid { grid-template-columns: 1fr; }
       .globe-wrap { width: min(100%, 420px); order: -1; }
@@ -437,10 +441,9 @@
       .seg .pill { display: none; }
       .seg button[aria-selected="true"] { background: var(--cyan); }
       .cta .get { grid-template-columns: 1fr; }
-      .cmp { height: auto; }
-      .cmp-b-bg { position: static; clip-path: none !important; }
-      .cmp-side { position: static; width: 100%; }
-      .cmp-handle, .cmp-range, .cmp-hint { display: none; }
+      .flip-row { height: 78px; }
+      .face { font-size: 14px; }
+      .face small { display: none; }
       .phases { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); }
       .phases::before, .phases::after { display: none; }
     }
@@ -513,7 +516,7 @@
   <span id="top"></span>
   <canvas id="gl" aria-hidden="true"></canvas>
   <canvas id="net" aria-hidden="true" hidden></canvas>
-  <div class="hero-hint"><span><b>drag</b> rotate</span><span><b>click</b> scatter</span><span><b>/</b> terminal</span><span><b>&#8689;</b> resize</span></div>
+  <div class="hero-hint"><span><b>drag</b> rotate</span><span><b>click</b> scatter</span><span><b>/</b> terminal</span><span><b>S M L</b> size</span></div>
   <div class="hero-shape" id="hero-shape"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
@@ -535,8 +538,7 @@
   </div>
   <div class="wrap term-dock">
     <div class="term" id="term-card" aria-label="Interactive terminal">
-      <div class="term-grip" id="term-grip" title="Drag to resize" aria-hidden="true"></div>
-      <div class="term-bar" id="term-bar"><i id="t-red" title="Reset"></i><i id="t-yel" title="Collapse"></i><i id="t-grn" title="Maximize"></i><span id="term-title">handoff.log <em>· click to type</em></span></div>
+      <div class="term-bar" id="term-bar"><i id="t-red" title="Reset"></i><i id="t-yel" title="Collapse"></i><i id="t-grn" title="Maximize"></i><span class="t-size" id="t-size" aria-label="Terminal size"><button type="button" data-s="s" aria-pressed="false" title="Small">S</button><button type="button" data-s="m" aria-pressed="true" title="Medium">M</button><button type="button" data-s="l" aria-pressed="false" title="Large">L</button></span><span id="term-title">handoff.log <em>· click to type</em></span></div>
       <div class="term-body" id="term"></div>
       <input id="term-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input">
     </div>
@@ -737,29 +739,18 @@
   <div class="wrap">
     <div class="kicker">Why Network Gears</div>
     <h2 class="wipe">What you get that you will not get from a managed service contract.</h2>
-    <p class="lede rise">Four commitments, and the practice they replace. Drag the handle.</p>
-    <div class="cmp spot-b" id="cmp">
-      <div class="cmp-side cmp-a">
-        <h4>the usual contract</h4>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>A ticket queue and an L1 tech who escalates</li>
-          <li><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Sized for today, rebuilt in 18 months</li>
-          <li><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Security quoted later as an add-on</li>
-          <li><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Undocumented, so you can never leave</li>
-        </ul>
+    <p class="lede rise">Four commitments, and the practice they replace.</p>
+    <div class="flip" id="flip">
+      <div class="flip-head">
+        <div class="flip-sw" id="flip-sw" role="tablist" aria-label="Compare"><span class="knob" aria-hidden="true"></span><button type="button" role="tab" aria-selected="true" data-side="a">the usual contract</button><button type="button" role="tab" aria-selected="false" data-side="b">with Network Gears</button></div>
+        <div class="flip-hint">hover or tap a row to flip it</div>
       </div>
-      <div class="cmp-b-bg" id="cmp-b"><div class="cmp-side cmp-b">
-        <h4>with Network Gears</h4>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>The engineer who designed it is on the call</li>
-          <li><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>Sized for three years out, grow into it</li>
-          <li><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>Zero Trust and MFA from the first diagram</li>
-          <li><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>Runbooks and diagrams, your team owns it</li>
-        </ul>
-      </div></div>
-      <div class="cmp-handle" id="cmp-handle"></div>
-      <div class="cmp-hint">drag</div>
-      <input type="range" class="cmp-range" id="cmp-range" min="0" max="100" value="50" aria-label="Compare the usual contract with Network Gears">
+      <ul class="flip-list" id="flip-list">
+        <li class="flip-row"><div class="flip-in" tabindex="0"><div class="face fa"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>A ticket queue and an L1 tech who escalates<small>support</small></div><div class="face fb"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>The engineer who designed it is on the call<small>support</small></div></div></li>
+        <li class="flip-row"><div class="flip-in" tabindex="0"><div class="face fa"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Sized for today, rebuilt in 18 months<small>architecture</small></div><div class="face fb"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>Sized for three years out, grow into it<small>architecture</small></div></div></li>
+        <li class="flip-row"><div class="flip-in" tabindex="0"><div class="face fa"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Security quoted later as an add-on<small>security</small></div><div class="face fb"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>Zero Trust and MFA from the first diagram<small>security</small></div></div></li>
+        <li class="flip-row"><div class="flip-in" tabindex="0"><div class="face fa"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Undocumented, so you can never leave<small>handoff</small></div><div class="face fb"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg>Runbooks and diagrams, your team owns it<small>handoff</small></div></div></li>
+      </ul>
     </div>
     <div class="why-grid">
       <div class="why spot tilt">
@@ -1141,7 +1132,7 @@
       print('dim', 'interactive shell. type help for commands.'); renderLive();
     }
     const CMDS = {
-      help: () => { print('w', 'commands'); print('', '  help        this list'); print('', '  stack       what we build'); print('', '  where       where we deliver'); print('', '  how         ways to engage'); print('', '  book        email us for a free review'); print('', '  go <name>   jump to a section (stack, sketch, where, why, how, book)'); print('', '  shape <n>   morph the hero (1-6)'); print('', '  max / small   grow or shrink this window (or drag the corner)'); print('', '  uptime, whoami, ls, cat readme, clear, exit'); },
+      help: () => { print('w', 'commands'); print('', '  help        this list'); print('', '  stack       what we build'); print('', '  where       where we deliver'); print('', '  how         ways to engage'); print('', '  book        email us for a free review'); print('', '  go <name>   jump to a section (stack, sketch, where, why, how, book)'); print('', '  shape <n>   morph the hero (1-6)'); print('', '  size s|m|l   resize this window, max for full screen'); print('', '  uptime, whoami, ls, cat readme, clear, exit'); },
       stack: () => { ['identity and access', 'network design', 'compute and storage', 'cloud and migration', 'devices and endpoints', 'security and compliance', 'automation and operations'].forEach((l, i) => print('', '  L' + (i + 1) + '  ' + l)); print('dim', '  each one designed, built, documented, handed off'); },
       where: () => { print('', 'based in San Diego, California'); print('', 'delivered in 45 countries. recent: Las Vegas, Washington DC, São Paulo, London, Frankfurt, Dubai, Singapore, Tokyo, Sydney'); },
       how: () => { print('', '  hourly consulting     a specific problem or a second opinion'); print('', '  fixed-scope project   a defined outcome with a deadline'); print('', '  managed services      we keep running what we built'); print('', '  service package       predictable improvement, predictable cost'); },
@@ -1157,7 +1148,7 @@
       ping: (a) => { print('', `PING ${a || 'networkgears.com'}: 64 bytes, time=1ms`); print('ok', 'pong. we answer fast.'); },
       scatter: () => { window.heroPulse && window.heroPulse(); print('ok', 'boom'); },
       clear: () => { out = []; },
-      max: () => setMax(true), big: () => setMax(true), small: () => setMax(false),
+      max: () => setMax(true), big: () => { setMax(false); setSize('l'); }, small: () => { setMax(false); setSize('s'); }, size: (a) => { if (SIZES[a]) { setMax(false); setSize(a); } else print('err', 'size s | m | l'); },
       exit: () => { live = false; demo = true; card.classList.remove('live'); title.innerHTML = 'handoff.log <em>· click to type</em>'; input.blur(); play(); },
       matrix: () => { print('ok', 'wake up, neo.'); rain(); }
     };
@@ -1167,17 +1158,16 @@
       if (!name) return;
       if (CMDS[name]) CMDS[name](arg); else print('err', `command not found: ${name}. try help`);
     }
-    card.addEventListener('click', e => { if (e.target.closest('.term-bar i, .term-grip')) return; enter(); input.focus(); });
-    /* resize, maximize, collapse, reset */
-    const grip = $('#term-grip'), bar = $('#term-bar'), scrim = $('#term-scrim'), body = el; let rs = null;
-    const clampW = w => Math.max(380, Math.min(window.innerWidth - 40, w)), clampH = h => Math.max(150, Math.min(window.innerHeight * 0.82, h));
-    grip.addEventListener('pointerdown', e => { e.preventDefault(); rs = { x: e.clientX, y: e.clientY, w: card.offsetWidth, h: body.offsetHeight }; card.classList.add('resizing'); grip.setPointerCapture(e.pointerId); });
-    grip.addEventListener('pointermove', e => { if (!rs) return; card.style.width = clampW(rs.w + (rs.x - e.clientX)) + 'px'; body.style.height = clampH(rs.h + (rs.y - e.clientY)) + 'px'; });
-    const rsEnd = () => { rs = null; card.classList.remove('resizing'); }; grip.addEventListener('pointerup', rsEnd); grip.addEventListener('pointercancel', rsEnd);
+    card.addEventListener('click', e => { if (e.target.closest('.term-bar i, .t-size')) return; enter(); input.focus(); });
+    /* size presets, maximize, collapse, reset */
+    const bar = $('#term-bar'), scrim = $('#term-scrim'), body = el;
+    const SIZES = { s: [420, 200], m: [520, 300], l: [700, 440] };
+    function setSize(k) { const [w, h] = SIZES[k]; card.style.width = Math.min(w, window.innerWidth - 40) + 'px'; body.style.height = Math.min(h, window.innerHeight * 0.7) + 'px'; $$('#t-size button').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === k)); card.classList.remove('min'); body.scrollTop = body.scrollHeight; }
+    $$('#t-size button').forEach(b => b.addEventListener('click', () => setSize(b.dataset.s)));
     function setMax(on) { card.classList.toggle('max', on); card.classList.remove('min'); scrim.classList.toggle('on', on); card.closest('.term-dock').classList.toggle('max', on); if (on) { enter(); input.focus(); } body.scrollTop = body.scrollHeight; }
     $('#t-grn').addEventListener('click', () => setMax(!card.classList.contains('max')));
     $('#t-yel').addEventListener('click', () => { if (card.classList.contains('max')) setMax(false); card.classList.toggle('min'); });
-    $('#t-red').addEventListener('click', () => { setMax(false); card.classList.remove('min'); card.style.width = ''; body.style.height = ''; if (live) CMDS.exit(); });
+    $('#t-red').addEventListener('click', () => { setMax(false); setSize('m'); if (live) CMDS.exit(); });
     bar.addEventListener('dblclick', e => { if (e.target.tagName === 'I') return; setMax(!card.classList.contains('max')); });
     scrim.addEventListener('click', () => setMax(false));
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && card.classList.contains('max')) setMax(false); });
@@ -1387,14 +1377,17 @@
     (function f() { cx += (tx - cx) * 0.04; cy += (ty - cy) * 0.04; blobs.forEach((b, i) => { b.style.translate = `${cx * (i % 2 ? -1 : 1)}px ${cy}px`; }); requestAnimationFrame(f); })();
   })();
   (function () {
-    const cmp = $('#cmp'), b = $('#cmp-b'), h = $('#cmp-handle'), r = $('#cmp-range'); if (!cmp) return;
-    let v = 50, target = 50, raf;
-    function set(p) { v = p; b.style.clipPath = `inset(0 0 0 ${p}%)`; h.style.left = p + '%'; }
-    function to(p) { target = Math.max(0, Math.min(100, p)); if (reduce) { set(target); return; } cancelAnimationFrame(raf); (function step() { v += (target - v) * 0.25; set(v); if (Math.abs(target - v) > 0.2) raf = requestAnimationFrame(step); })(); }
-    r.addEventListener('input', () => to(+r.value));
-    cmp.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' && e.buttons === 0) { const rect = cmp.getBoundingClientRect(); to((e.clientX - rect.left) / rect.width * 100); } });
-    cmp.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') to(50); });
-    set(50);
+    const rows = $$('#flip .flip-row'), sw = $('#flip-sw'), btns = $$('button', sw); if (!rows.length) return;
+    function setAll(b) { rows.forEach((r, i) => { r.querySelector('.flip-in').style.transitionDelay = (i * 90) + 'ms'; r.classList.toggle('on', b); }); sw.classList.toggle('b', b); btns.forEach(x => x.setAttribute('aria-selected', (x.dataset.side === 'b') === b)); }
+    btns.forEach(x => x.addEventListener('click', () => setAll(x.dataset.side === 'b')));
+    rows.forEach(r => { const inner = r.querySelector('.flip-in');
+      const one = () => { inner.style.transitionDelay = '0ms'; r.classList.toggle('on'); const all = rows.every(x => x.classList.contains('on')); const none = rows.every(x => !x.classList.contains('on')); if (all || none) { sw.classList.toggle('b', all); btns.forEach(x => x.setAttribute('aria-selected', (x.dataset.side === 'b') === all)); } };
+      inner.addEventListener('click', one);
+      inner.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); one(); } });
+      if (fine) { inner.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && !r.classList.contains('on')) { inner.style.transitionDelay = '0ms'; r.classList.add('on'); r._hover = true; } }); inner.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && r._hover && !sw.classList.contains('b')) { r.classList.remove('on'); } r._hover = false; }); }
+    });
+    // flip everything once when it scrolls into view, then back, as a demo
+    if (!reduce) { const io = new IntersectionObserver(([en]) => { if (!en.isIntersecting) return; io.disconnect(); setTimeout(() => setAll(true), 700); setTimeout(() => setAll(false), 2600); }, { threshold: .5 }); io.observe($('#flip')); }
   })();
   (function () {
     if (reduce) return; const copy = $('.hero-copy'), dock = $('.term-dock'); if (!copy) return;
