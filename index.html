@@ -662,6 +662,27 @@
     @media(max-width:520px) { .lab { border-radius:16px; } .lab-top { align-items:start; padding:16px; flex-direction:column; gap:12px; } .lab-mode { width:100%; justify-content:space-between; } .lab-scene { padding:18px 8px 0; } .lab-signal { padding-inline:8px; font-size:8px; } .lab-signal > span { display:none; } .lab-readouts div { padding:14px 8px; } .lab-readouts dd { font-size:11px; } .lab-readouts dt { font-size:8px; letter-spacing:0; } .lab-controls { padding:16px; gap:8px; } .lab-break { width:100%; justify-content:center; } .lab-small { padding:10px 12px; } .lab-status { padding:16px; } .lab-console { padding:20px 16px; } .lab-events { gap:18px 12px; } .lab-events li { grid-template-columns:18px 1fr; gap:6px; } }
     @media(max-width:520px) { .lab svg { max-height:none; } }
     @media(prefers-reduced-motion:reduce) { .lab-packet { animation:none !important; stroke-dasharray:6 10; } }
+    /* Blueprint export and exact-file preview. */
+    .bp-offer { margin-top:22px; border-top:1px solid #81e9ea33; padding:22px 4px 2px; display:grid; grid-template-columns:42px 1fr; gap:14px; }
+    .bp-mark { width:42px; height:52px; border:1px solid #81e9ea66; border-radius:6px 13px 6px 6px; background:linear-gradient(145deg,#81e9ea1a,#ffffff02); display:grid; place-items:center; color:#81e9ea; font:12px var(--mono); }
+    .bp-offer h3 { font-size:17px; letter-spacing:-.02em; }
+    .bp-offer p { color:#9eb3c5; font-size:12px; line-height:1.7; margin:7px 0 16px; }
+    .bp-offer button { font-size:12px; padding:11px 16px; }
+    .bp-offer small { display:block; margin-top:10px; color:#9eb3c5; font:10px var(--mono); }
+    #bp-dialog { margin:auto; padding:0; width:min(1040px,calc(100vw - 32px)); max-height:90svh; border:1px solid #81e9ea44; border-radius:20px; background:#0c1521; color:var(--white); box-shadow:0 40px 120px #000a; overflow:auto; }
+    #bp-dialog::backdrop { background:#030812d9; backdrop-filter:blur(8px); }
+    .bp-toolbar { position:sticky; top:0; z-index:1; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:#0c1521f5; border-bottom:1px solid var(--line); }
+    .bp-toolbar h2 { font-size:20px; max-width:none; }
+    .bp-toolbar p { font-size:11px; margin-top:6px; color:#a2b6c8; }
+    .bp-actions { display:flex; gap:10px; align-items:center; }
+    .bp-actions .btn { font-size:12px; padding:12px 16px; }
+    .bp-close { min-width:40px; height:40px; border:1px solid var(--line-2); border-radius:10px; font-size:24px; line-height:1; }
+    .bp-close:hover { background:#ffffff0d; }
+    .bp-sheet { overflow:auto; padding:30px; background:radial-gradient(#91b8c41c .8px,transparent .8px) 0 0/16px 16px,#17232f; }
+    .bp-sheet img { display:block; width:100%; height:auto; background:#f3f5f0; box-shadow:0 15px 50px #0006; }
+    .bp-sheet.bp-zoomed img { min-width:1000px; max-width:none; }
+    .bp-download-status { padding:12px 24px; color:#a2b6c8; font-size:12px; }
+    @media(max-width:600px) { #bp-dialog { width:calc(100vw - 16px); max-height:94svh; border-radius:14px; } .bp-toolbar { padding:16px; align-items:start; flex-wrap:wrap; gap:12px; } .bp-toolbar h2 { font-size:18px; } .bp-actions { width:100%; justify-content:space-between; } .bp-actions .btn { flex:1; justify-content:center; } .bp-sheet { padding:12px; } .bp-offer { grid-template-columns:32px 1fr; gap:12px; } .bp-mark { width:32px; height:42px; font-size:10px; } }
   </style>
 </head>
 <body>
@@ -914,10 +935,17 @@
         <div class="blueprint-label">Your environment / blueprint</div>
         <svg id="sk-svg" viewBox="0 0 800 480" role="img" aria-label="Architecture sketch of your environment"></svg>
         <div class="sk-foot"><span id="sk-cap"></span><a href="#resilience" style="color:var(--cyan);text-underline-offset:4px">Test a failure scenario ↗</a></div>
+        <div class="bp-offer"><div class="bp-mark" aria-hidden="true">NG</div><div><h3>Take the plan with you.</h3><p>Your architecture, recommendations, and next steps in one shareable blueprint.</p><button class="btn btn-solid" id="bp-open" type="button">Preview &amp; download <span aria-hidden="true">↗</span></button><small>Free SVG download. No signup.</small></div></div>
       </div>
     </div>
   </div>
 </section>
+
+<dialog id="bp-dialog" aria-labelledby="bp-title" aria-describedby="bp-summary">
+  <div class="bp-toolbar"><div><h2 id="bp-title">Your infrastructure blueprint</h2><p id="bp-summary"></p></div><div class="bp-actions"><a id="bp-download" class="btn btn-solid" download>Download SVG <span aria-hidden="true">↓</span></a><button type="button" id="bp-zoom" class="lab-small" aria-pressed="false">Zoom in</button><button type="button" id="bp-close" class="bp-close" aria-label="Close blueprint preview" autofocus>×</button></div></div>
+  <div class="bp-sheet"><img id="bp-image" alt="Your infrastructure blueprint"></div>
+  <p id="bp-download-status" class="bp-download-status" role="status"></p>
+</dialog>
 
 <!-- RESILIENCE LAB -->
 <section id="resilience" class="section" aria-labelledby="lab-heading">
@@ -1592,6 +1620,106 @@
       return g;
     }
     const PRESETS = { startup: { sites: 1, people: 25, remote: true, onprem: false, cloud: true, compliance: false, mac: true, win: false }, law: { sites: 2, people: 40, remote: false, onprem: true, cloud: true, compliance: true, mac: false, win: true }, retail: { sites: 6, people: 220, remote: false, onprem: true, cloud: true, compliance: false, mac: false, win: true }, saas: { sites: 1, people: 80, remote: true, onprem: false, cloud: true, compliance: true, mac: true, win: false } };
+    /* Self-contained SVG report. Preview and download share the exact Blob. */
+    let blueprintRecommendations = [];
+    const bpDialog = document.getElementById('bp-dialog');
+    let blueprintURL = null, priorOverflow = '';
+    const xml = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+    function blueprintSVG(state, recommendations, diagram, dateLabel) {
+      const mode = state.onprem && state.cloud ? 'Hybrid' : state.cloud ? 'Cloud-first' : state.onprem ? 'On-prem' : 'SaaS-only';
+      const devices = state.mac && state.win ? 'Mac + Windows' : state.win ? 'Windows' : 'Mac';
+      const text = (x,y,value,size=16,color='#243d49',weight=400) => `<text x="${x}" y="${y}" font-family="Arial, Helvetica, sans-serif" font-size="${size}" font-weight="${weight}" fill="${color}">${xml(value)}</text>`;
+      function wrap(value,max=92) {
+        const lines=[]; let line='';
+        String(value).split(/\s+/).forEach(word=>{ if((line+' '+word).trim().length>max && line){lines.push(line);line=word;}else line+=(line?' ':'')+word; });
+        if(line)lines.push(line); return lines;
+      }
+      let y=1068;
+      const rows = recommendations.map((recommendation,i) => {
+        let row=text(64,y,String(i+1).padStart(2,'0'),13,'#187c78',700);
+        wrap(recommendation,96).forEach((line,j)=>{ row+=text(110,y+j*24,line,16); });
+        y+=wrap(recommendation,96).length*24+22;
+        row+=`<path d="M110 ${y-22}H936" stroke="#d5dfda"/>`; return row;
+      }).join('');
+      const assumptions = [
+        'Concept only. This is a conversation starter, not a site survey, bill of materials, or validated design.',
+        `People are distributed approximately evenly across locations; one managed device per person is assumed.${state.remote?' The diagram estimates 40% remote staff.':''}`,
+        `${state.sites>6?'The diagram shows six locations and summarizes the rest. ':''}AP counts, carrier diversity, capacity, and recovery behavior require validation.`,
+        state.compliance ? 'SOC 2 / HIPAA interest is selected. Suggested controls do not establish certification or compliance.' : 'Security and access controls are proposed starting points; scope and requirements need review.'
+      ];
+      y+=28; const ay=y; y+=55;
+      let assumptionText=text(64,ay+28,'PLANNING ASSUMPTIONS',12,'#527069',700);
+      assumptions.forEach(a=>{wrap(a,105).forEach(line=>{assumptionText+=text(64,y,line,14,'#527069');y+=22;});y+=9;});
+      const footerY=y+44, height=footerY+105;
+      // Export the current diagram without page styles, animation, or font requests.
+      const diagramStyle=`.sk-box{fill:#ffffff08;stroke:#88acb44d;stroke-width:1}.sk-box.hub{fill:#8af3ce18;stroke:#8af3ce}.sk-t{font:600 14px Arial,sans-serif;fill:#eff8f6}.sk-s{font:11.5px monospace;fill:#a0bac4}.sk-s.c{fill:#8af3ce}.flow{fill:none;stroke:#8af3ceaa;stroke-width:1.2;stroke-dasharray:4 6}.mesh{fill:none;stroke:#6bafff;stroke-width:1.2;stroke-dasharray:2 5}.sw{fill:#8af3ce20;stroke:#8af3ce80}.port{fill:#8af3ce}.ap{fill:none;stroke:#a0bac4;stroke-width:1}.dev{fill:#a8c3c4}.dev.m{fill:#8af3ce}.comp{fill:none;stroke:#e4ca83;stroke-width:1.2;stroke-dasharray:6 6}`;
+      // Replace an inherited assertion in the sketch with a concept label in the export.
+      diagram = diagram.replaceAll('SSO + MFA, one directory','SSO + MFA').replaceAll('device-based access','remote access').replaceAll('AWS / GCP, audited','AWS / GCP, proposed').replaceAll('SOC 2 / HIPAA controls','Proposed SOC 2 / HIPAA controls');
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="${height}" viewBox="0 0 1000 ${height}" role="img" aria-labelledby="title desc">
+<title id="title">Network Gears infrastructure blueprint</title><desc id="desc">Concept for ${state.sites} locations and ${state.people} people. ${xml(mode)} infrastructure, recommendations, and planning assumptions.</desc>
+<rect width="1000" height="${height}" fill="#f3f5f0"/>
+<rect width="1000" height="236" fill="#0c1925"/><path d="M0 236H1000" stroke="#8af3ce" stroke-width="4"/>
+${text(64,55,'NG / NETWORK GEARS',15,'#8af3ce',700)}${text(707,55,'CONCEPT BLUEPRINT / 01',12,'#b9cdd0')}
+${text(64,118,'Your infrastructure,',40,'#f5f8f4',700)}${text(64,165,'with a plan.',40,'#8af3ce',700)}
+${text(64,207,'Built around your sketch. Ready for a conversation.',16,'#b9cdd0')}
+${text(64,280,'LOCATIONS',11,'#527069',700)}${text(64,318,String(state.sites),30,'#132e3b',700)}
+${text(260,280,'PEOPLE',11,'#527069',700)}${text(260,318,String(state.people),30,'#132e3b',700)}
+${text(460,280,'ENVIRONMENT',11,'#527069',700)}${text(460,318,mode,24,'#132e3b',700)}
+${text(740,280,'DEVICES',11,'#527069',700)}${text(740,318,devices,22,'#132e3b',700)}
+<path d="M64 343H936" stroke="#cbd9d3"/>
+${text(64,373,`Remote team: ${state.remote?'Yes':'No'}    •    On-prem servers: ${state.onprem?'Yes':'No'}    •    Cloud workloads: ${state.cloud?'Yes':'No'}`,14)}
+${text(64,399,`SOC 2 / HIPAA interest: ${state.compliance?'Selected':'Not selected'}    •    Prepared ${dateLabel}`,14)}
+<rect x="40" y="432" width="920" height="576" rx="16" fill="#101f2c"/>
+${text(64,464,'01 / YOUR ENVIRONMENT',11,'#8af3ce',700)}${text(698,464,'ILLUSTRATIVE / NOT TO SCALE',10,'#abc5cd')}
+<svg x="60" y="478" width="880" height="528" viewBox="0 0 800 480"><style>${diagramStyle}</style>${diagram}</svg>
+${text(64,1040,'02 / RECOMMENDED STARTING POINT',12,'#187c78',700)}
+${rows}<rect x="40" y="${ay}" width="920" height="${y-ay+8}" rx="12" fill="#e7ede6"/>${assumptionText}
+<path d="M64 ${footerY-16}H936" stroke="#cbd9d3"/>
+${text(64,footerY+14,'Let’s turn the sketch into a working system.',22,'#132e3b',700)}
+${text(64,footerY+48,'hello@networkgears.com  /  networkgears.com',15,'#187c78')}
+${text(64,footerY+78,'Network Gears · San Diego, California · Independent IT expertise',12,'#527069')}
+</svg>`;
+    }
+    document.getElementById('bp-open').addEventListener('click', () => {
+      const snapshot = {...S};
+      const dateLabel = new Intl.DateTimeFormat('en-US',{year:'numeric',month:'short',day:'numeric'}).format(new Date());
+      const report = blueprintSVG(snapshot, blueprintRecommendations.slice(), svg.innerHTML, dateLabel);
+      blueprintURL = URL.createObjectURL(new Blob([report], {type:'image/svg+xml;charset=utf-8'}));
+      const image = document.getElementById('bp-image'), download = document.getElementById('bp-download');
+      image.src = blueprintURL;
+      image.alt = `Infrastructure blueprint for ${snapshot.sites} locations and ${snapshot.people} people, including the architecture diagram, recommendations, and planning assumptions.`;
+      download.href = blueprintURL;
+      download.download = `network-gears-blueprint-${snapshot.sites}-sites-${snapshot.people}-people.svg`;
+      document.getElementById('bp-summary').textContent = `${snapshot.sites} location${snapshot.sites === 1 ? '' : 's'} · ${snapshot.people} people · Scalable SVG`;
+      document.getElementById('bp-download-status').textContent = 'The preview is the exact file you will download. No signup required.';
+      priorOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      bpDialog.showModal();
+      bpDialog.scrollTop = 0;
+      bpDialog.querySelector('.bp-sheet').classList.remove('bp-zoomed');
+      document.getElementById('bp-zoom').setAttribute('aria-pressed','false');
+      document.getElementById('bp-zoom').textContent = 'Zoom in';
+    });
+    document.getElementById('bp-zoom').addEventListener('click', e => {
+      const zoomed = bpDialog.querySelector('.bp-sheet').classList.toggle('bp-zoomed');
+      e.currentTarget.setAttribute('aria-pressed', String(zoomed));
+      e.currentTarget.textContent = zoomed ? 'Fit width' : 'Zoom in';
+    });
+    document.getElementById('bp-close').addEventListener('click', () => bpDialog.close());
+    bpDialog.addEventListener('click', e => { if(e.target===bpDialog){const r=bpDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)bpDialog.close();} });
+    bpDialog.addEventListener('close', () => {
+      document.body.style.overflow = priorOverflow;
+      const retired = blueprintURL; blueprintURL = null;
+      document.getElementById('bp-image').removeAttribute('src');
+      document.getElementById('bp-download').removeAttribute('href');
+      // Allow an initiated browser download to finish before retiring its Blob.
+      if(retired) setTimeout(()=>URL.revokeObjectURL(retired),30000);
+      document.getElementById('bp-open').focus();
+    });
+    document.getElementById('bp-download').addEventListener('click', () => {
+      document.getElementById('bp-download-status').textContent = 'Download requested. Open the SVG in your browser or design app to view it at full size.';
+    });
+
     function build() {
       $$('#presets .preset').forEach(b => b.setAttribute('aria-pressed', Object.entries(PRESETS[b.dataset.p]).every(([k, v]) => S[k] === v)));
       const pps = Math.max(1, Math.round(S.people / S.sites)), k = Math.min(S.sites, 6), extra = S.sites - k;
@@ -1621,6 +1749,7 @@
       if (S.remote) R.push('Device-based access for remote staff, no office VPN concentrator to babysit');
       if (S.compliance) R.push('Centralized logging, access reviews, and evidence collection for the audit');
       R.push(S.people >= 150 || S.sites >= 4 ? 'Engagement fit: fixed-scope build, then managed services' : 'Engagement fit: fixed-scope build, then your team runs it with us on call');
+      blueprintRecommendations = R.slice();
       rec.innerHTML = R.map((t, i) => `<li style="animation-delay:${i * 40}ms">${esc(t)}</li>`).join('');
       const body = `Hi Network Gears,\n\nHere is my environment sketch from networkgears.com:\n\nLocations: ${S.sites}\nPeople: ${S.people}\nRemote team: ${S.remote ? 'yes' : 'no'}\nOn-prem servers: ${S.onprem ? 'yes' : 'no'}\nCloud workloads: ${S.cloud ? 'yes' : 'no'}\nCompliance (SOC 2 / HIPAA): ${S.compliance ? 'yes' : 'no'}\nDevices: ${S.mac ? 'Mac ' : ''}${S.win ? 'Windows' : ''}\n\nWhat you proposed:\n${R.map(t => '- ' + t).join('\n')}\n\nI would like to book the free 30-minute review.\n`;
       mail.href = 'mailto:hello@networkgears.com?subject=' + encodeURIComponent(`Environment sketch: ${S.sites} site${S.sites > 1 ? 's' : ''}, ${S.people} people`) + '&body=' + encodeURIComponent(body);
