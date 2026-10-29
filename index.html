@@ -167,6 +167,12 @@
     .cursor { display: inline-block; width: 7px; height: 13px; background: var(--cyan); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
     #term-in { position: absolute; opacity: 0; width: 1px; height: 1px; left: -9999px; }
+    .term-body pre.game { font-family: var(--mono); font-size: 15px; line-height: 1.12; margin: 6px 0 4px; color: rgba(127,144,170,0.55); letter-spacing: 0; }
+    .term-body pre.game .p { color: var(--cyan); } .term-body pre.game .w { color: #fff; text-shadow: 0 0 8px var(--cyan); } .term-body pre.game .warn { color: #F2C94C; }
+    .dpad { display: grid; grid-template-columns: repeat(3, 46px); grid-template-rows: repeat(2, 40px); gap: 6px; justify-content: center; margin: 10px 0 4px; }
+    .dpad button { border: 1px solid var(--line-2); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--cyan); font-size: 14px; touch-action: manipulation; }
+    .dpad button:active { background: rgba(34,211,238,0.25); }
+    .dpad [data-d="u"] { grid-column: 2; grid-row: 1; } .dpad [data-d="l"] { grid-column: 1; grid-row: 2; } .dpad [data-d="d"] { grid-column: 2; grid-row: 2; } .dpad [data-d="r"] { grid-column: 3; grid-row: 2; }
     .t-size { display: inline-flex; gap: 2px; margin-left: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 2px; }
     .t-size button { font-family: var(--mono); font-size: 10.5px; line-height: 1; padding: 4px 7px; border-radius: 4px; color: var(--fog-2); transition: background .15s, color .15s; }
     .t-size button:hover { color: var(--white); }
@@ -176,6 +182,7 @@
     .term-dock.max { z-index: 71; opacity: 1 !important; }
     .term.max { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(960px, 92vw) !important; height: min(660px, 86vh); z-index: 70; background: rgba(12,18,34,0.94); box-shadow: 0 40px 120px -20px rgba(0,0,0,0.9), 0 0 0 1px rgba(34,211,238,0.25); }
     .term.max .term-body { height: calc(100% - 41px) !important; font-size: 13.5px; }
+    .term.max .term-body pre.game { font-size: 22px; }
     .term.max .t-size { display: none; }
     .term.min .term-body { height: 0 !important; padding-top: 0; padding-bottom: 0; overflow: hidden; }
     .term-scrim { position: fixed; inset: 0; background: rgba(7,11,20,0.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); z-index: 69; opacity: 0; pointer-events: none; transition: opacity .3s; }
@@ -451,6 +458,7 @@
       #hero { padding-top: 104px; min-height: auto; }
       .proof { grid-template-columns: repeat(3, auto); gap: 18px; width: 100%; }
       .term-body { height: 230px; font-size: 12px; }
+      .term-body pre.game { font-size: 12.5px; }
       .hero-ctas .btn { flex: 1 1 100%; justify-content: center; }
       .sk-board { padding: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .sk-board svg { min-width: 620px; }
@@ -1101,7 +1109,7 @@
       [['p', '$ ng deploy --site venice-ca --from hq-baseline'], ['', 'switching   48 ports configured, labeled', 'ok', 'ok'], ['', 'wifi        4 aps, same ssids as hq', 'ok', 'ok'], ['', 'circuits    2 carriers, failover tested', 'ok', 'ok'], ['', 'access      badge readers on vlan 40', 'ok', 'ok'], ['dim', 'site matches baseline. diagram updated.']],
       [['p', '$ ng handoff --to client-it'], ['', 'runbooks    14 procedures, reviewed', 'ok', 'ok'], ['', 'diagrams    L2, L3, rack elevations', 'ok', 'ok'], ['', 'configs     exported, validated, in git', 'ok', 'ok'], ['', 'admin       transferred, ours revoked', 'ok', 'ok'], ['dim', 'your team owns it. we are a phone call away.']]
     ];
-    let s = 0, demo = true, live = false, out = [], buffer = '', hist = [], hi = -1;
+    let s = 0, demo = true, live = false, out = [], buffer = '', hist = [], hi = -1, game = null, promptStr = '$ ';
     const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     const line = (cls, text, st, stc) => `<div class="ln"><span class="${cls || ''}">${esc(text)}</span>${st ? `<span class="st ${stc}">${esc(st)}</span>` : ''}</div>`;
     function renderScene(scene, upTo, partial) {
@@ -1124,7 +1132,7 @@
     }
     play();
     /* interactive */
-    function renderLive() { el.innerHTML = out.join('') + `<div class="ln"><span><span class="p">$ </span><span class="w">${esc(buffer)}</span><span class="cursor"></span></span></div>`; el.scrollTop = el.scrollHeight; }
+    function renderLive() { if (game && game.render) { el.innerHTML = game.render(); return; } el.innerHTML = out.join('') + `<div class="ln"><span><span class="p">${esc(promptStr)}</span><span class="w">${esc(buffer)}</span><span class="cursor"></span></span></div>`; el.scrollTop = el.scrollHeight; }
     function print(cls, text, st, stc) { out.push(line(cls, text, st, stc)); if (out.length > 60) out.shift(); }
     function enter() {
       if (live) return; live = true; demo = false; card.classList.add('live'); title.innerHTML = 'ng shell <em>· type help</em>';
@@ -1132,7 +1140,7 @@
       print('dim', 'interactive shell. type help for commands.'); renderLive();
     }
     const CMDS = {
-      help: () => { print('w', 'commands'); print('', '  help        this list'); print('', '  stack       what we build'); print('', '  where       where we deliver'); print('', '  how         ways to engage'); print('', '  book        email us for a free review'); print('', '  go <name>   jump to a section (stack, sketch, where, why, how, book)'); print('', '  shape <n>   morph the hero (1-6)'); print('', '  size s|m|l   resize this window, max for full screen'); print('', '  uptime, whoami, ls, cat readme, clear, exit'); },
+      help: () => { print('w', 'commands'); print('', '  help        this list'); print('', '  stack       what we build'); print('', '  where       where we deliver'); print('', '  how         ways to engage'); print('', '  book        email us for a free review'); print('', '  go <name>   jump to a section (stack, sketch, where, why, how, book)'); print('', '  shape <n>   morph the hero (1-6)'); print('', '  size s|m|l   resize this window, max for full screen'); print('w', 'games'); print('', '  snake        yes, in a terminal, on an IT website'); print('', '  incident     you are on call. three choices. minutes of downtime count.'); print('', '  uptime, whoami, ls, cat readme, clear, exit'); },
       stack: () => { ['identity and access', 'network design', 'compute and storage', 'cloud and migration', 'devices and endpoints', 'security and compliance', 'automation and operations'].forEach((l, i) => print('', '  L' + (i + 1) + '  ' + l)); print('dim', '  each one designed, built, documented, handed off'); },
       where: () => { print('', 'based in San Diego, CA. local support, global reach.'); print('', 'delivered in over 45 countries. recent: Las Vegas, Washington DC, São Paulo, London, Frankfurt, Dubai, Singapore, Tokyo, Sydney'); },
       how: () => { print('', '  hourly consulting     a specific problem or a second opinion'); print('', '  fixed-scope project   a defined outcome with a deadline'); print('', '  managed services      we keep running what we built'); print('', '  service package       predictable improvement, predictable cost'); },
@@ -1149,10 +1157,101 @@
       scatter: () => { window.heroPulse && window.heroPulse(); print('ok', 'boom'); },
       clear: () => { out = []; },
       max: () => setMax(true), big: () => { setMax(false); setSize('l'); }, small: () => { setMax(false); setSize('s'); }, size: (a) => { if (SIZES[a]) { setMax(false); setSize(a); } else print('err', 'size s | m | l'); },
-      exit: () => { live = false; demo = true; card.classList.remove('live'); title.innerHTML = 'handoff.log <em>· click to type</em>'; input.blur(); play(); },
-      matrix: () => { print('ok', 'wake up, neo.'); rain(); }
+      exit: () => { if (game) game.quit(true); live = false; demo = true; card.classList.remove('live'); title.innerHTML = 'handoff.log <em>· click to type</em>'; input.blur(); play(); },
+      matrix: () => { print('ok', 'wake up, neo.'); rain(); },
+      snake: () => startSnake(), play: () => startIncident(), incident: () => startIncident(), oncall: () => startIncident()
     };
+    /* ---- SNAKE ---- */
+    function startSnake() {
+      if (game) game.quit(true);
+      const C = 30, R = 12; let dir = [1, 0], next = [1, 0], body = [[6, 6], [5, 6], [4, 6]], food, score = 0, dead = false, paused = false, timer, best = 0;
+      try { best = +localStorage.getItem('ng-snake') || 0; } catch (e) {}
+      const place = () => { do { food = [(rnd() * C) | 0, (rnd() * R) | 0]; } while (body.some(b => b[0] === food[0] && b[1] === food[1])); };
+      place();
+      if (!mobile() && !card.classList.contains('max')) setSize('l'); if (mobile()) el.style.height = '420px';
+      const g = {
+        render() {
+          const grid = Array.from({ length: R }, () => Array(C).fill(' '));
+          body.forEach(([x, y], i) => { grid[y][x] = i === 0 ? '@' : '#'; }); grid[food[1]][food[0]] = '*';
+          const rows = grid.map(r => '│' + r.join('').replace(/#+|@|\*/g, m => m === '*' ? '<span class="warn">◆</span>' : m === '@' ? '<span class="w">█</span>' : '<span class="p">' + '█'.repeat(m.length) + '</span>') + '│').join('\n');
+          let h = `<div class="ln"><span class="dim">snake · score <span class="w">${score}</span> · best ${best} · ${fine ? 'arrows or wasd · p pause · esc quit' : 'tap the arrows'}</span></div><pre class="game">┌${'─'.repeat(C)}┐\n${rows}\n└${'─'.repeat(C)}┘</pre>`;
+          if (dead) h += `<div class="ln"><span class="err">game over · score ${score} · ${fine ? 'enter restarts · esc quits' : 'tap ▲ to restart'}</span></div>`; else if (paused) h += '<div class="ln"><span class="dim">paused · p resumes</span></div>';
+          if (!fine) h += '<div class="dpad"><button type="button" data-d="u">▲</button><button type="button" data-d="l">◀</button><button type="button" data-d="d">▼</button><button type="button" data-d="r">▶</button></div>';
+          return h;
+        },
+        dir(d) { if (dead) { restart(); return; } const m = { u: [0, -1], d: [0, 1], l: [-1, 0], r: [1, 0] }[d]; if (m && !(m[0] === -dir[0] && m[1] === -dir[1])) next = m; },
+        key(e) { const k = e.key.toLowerCase(); const map = { arrowup: 'u', w: 'u', arrowdown: 'd', s: 'd', arrowleft: 'l', a: 'l', arrowright: 'r', d: 'r' }; if (map[k]) { this.dir(map[k]); return true; } if (k === 'p') { paused = !paused; renderLive(); return true; } if (k === 'enter' && dead) { restart(); return true; } if (k === 'escape') { this.quit(); return true; } return false; },
+        quit(silent) { clearInterval(timer); game = null; promptStr = '$ '; if (mobile()) el.style.height = ''; if (!silent) print('dim', `snake: final score ${score}${score >= best && score > 0 ? ' · new best' : ''}`); renderLive(); }
+      };
+      function restart() { dir = [1, 0]; next = [1, 0]; body = [[6, 6], [5, 6], [4, 6]]; score = 0; dead = false; paused = false; place(); clearInterval(timer); timer = setInterval(tick, 150); renderLive(); }
+      function tick() {
+        if (dead || paused) return; dir = next; const h = [body[0][0] + dir[0], body[0][1] + dir[1]];
+        if (h[0] < 0 || h[0] >= C || h[1] < 0 || h[1] >= R || body.some(b => b[0] === h[0] && b[1] === h[1])) { dead = true; if (score > best) { best = score; try { localStorage.setItem('ng-snake', best); } catch (e) {} } clearInterval(timer); renderLive(); return; }
+        body.unshift(h); if (h[0] === food[0] && h[1] === food[1]) { score++; place(); clearInterval(timer); timer = setInterval(tick, Math.max(70, 150 - score * 4)); } else body.pop();
+        renderLive();
+      }
+      game = g; timer = setInterval(tick, 150); renderLive();
+    }
+    /* ---- INCIDENT ---- */
+    const SCENARIOS = [
+      { title: '03:12 · venice-ca · WAN down', steps: [
+        { text: 'Primary carrier is dark. Monitoring shows carrier B up but idle. Phones are down.', opts: [
+          { t: 'Fail over to carrier B per runbook NET-07', m: 2, r: 'Traffic shifts in two minutes. Phones recover.' },
+          { t: 'Reboot the core switch', m: 12, r: 'Switch comes back. WAN still dark. That was not it.' },
+          { t: 'Call the ISP and wait on hold', m: 25, r: 'Hold music. Outage confirmed. Still down.' }] },
+        { text: 'Failover works, but the VPN tunnels to HQ did not re-establish.', opts: [
+          { t: 'Check which interface the tunnel is bound to, rebind it to WAN2', m: 3, r: 'Tunnels up. Someone documented this once.' },
+          { t: 'Reboot the firewall', m: 9, r: 'Tunnels up after the reboot. Plus two minutes of everything else down.' },
+          { t: 'Tell users to work from the coffee shop', m: 40, r: 'The coffee shop wifi is now your corporate network. No.' }] },
+        { text: 'Carrier A is back. Do you fail back?', opts: [
+          { t: 'Wait for 15 minutes of stable link, fail back at lunch', m: 0, r: 'Clean failback. Nobody noticed.' },
+          { t: 'Fail back immediately', m: 6, r: 'It flapped. Twice.' },
+          { t: 'Leave it on carrier B forever', m: 0, r: 'Fine for now.', f: 'carrier B is 20 Mbps. Monday will hurt. (+15 min later)', later: 15 }] } ] },
+      { title: '09:40 · hq · nobody can log in', steps: [
+        { text: 'SSO is throwing errors for everyone. Slack is full of question marks.', opts: [
+          { t: 'Check the identity provider status page', m: 2, r: 'The IdP has a regional incident. It is not you.' },
+          { t: 'Reset everyone\'s passwords', m: 30, r: 'Now nobody can log in AND they have new passwords.' },
+          { t: 'Restart the domain controller', m: 15, r: 'The DC was fine. The IdP is still down.' }] },
+        { text: 'The IdP says one hour. Finance has payroll due at noon.', opts: [
+          { t: 'Use the documented break-glass admin for the payroll app', m: 5, r: 'Payroll runs. The break-glass login is logged.' },
+          { t: 'Wait it out', m: 60, r: 'Payroll is late. Finance remembers this.' },
+          { t: 'Disable MFA on the payroll app', m: 5, r: 'Payroll runs.', f: 'MFA was disabled during an incident. Audit finding. (+20 min later)', later: 20 }] },
+        { text: 'The IdP recovers. Afterwards?', opts: [
+          { t: 'Rotate the break-glass credentials, write it up', m: 3, r: 'Done. Runbook updated with the status page link.' },
+          { t: 'Forget about it', m: 0, r: 'Moving on.', f: 'the break-glass password is on a sticky note now. (+30 min later)', later: 30 },
+          { t: 'Email everyone a 900-word post-mortem', m: 20, r: 'Nobody read it. Finance did.' }] } ] },
+      { title: '14:05 · colo · the server room is hot', steps: [
+        { text: 'The CRAC unit failed. Room is at 34C and climbing.', opts: [
+          { t: 'Shut down non-critical hosts per runbook DC-03', m: 4, r: 'Heat load drops. Temperature stabilizes at 30C.' },
+          { t: 'Prop the door open and bring a fan', m: 20, r: 'The fan is decorative. 36C.' },
+          { t: 'Ignore it, it is probably fine', m: 90, r: 'The storage array thermal-shut itself down. It is not fine.' }] },
+        { text: 'Facilities says two hours. Critical workloads are still on the hot hosts.', opts: [
+          { t: 'Migrate critical VMs to the second site', m: 6, r: 'Live migration done. Users saw nothing.' },
+          { t: 'Wait it out', m: 25, r: 'Two hosts throttled. Database got slow. Tickets.' },
+          { t: 'Power everything back up, more fans', m: 40, r: 'More heat. More fans. More heat.' }] },
+        { text: 'Cooling is back. What now?', opts: [
+          { t: 'Add temperature alerting with thresholds the team agreed to', m: 0, r: 'Next time it pages at 27C, before anything throttles.' },
+          { t: 'Nothing, it is fixed', m: 0, r: 'For now.', f: 'no alerting. this happens again at 2am. (+45 min later)', later: 45 },
+          { t: 'Buy a bigger fan', m: 5, r: 'It is a nice fan.' }] } ] }
+    ];
+    function startIncident() {
+      if (game) game.quit(true);
+      const sc = SCENARIOS[(rnd() * SCENARIOS.length) | 0]; let step = 0, total = 0, later = 0; const findings = [];
+      print('w', 'incident · ' + sc.title); print('dim', 'you are on call. choose 1, 2 or 3. minutes of downtime count.'); print('', '');
+      function show() { const st = sc.steps[step]; print('', st.text); st.opts.forEach((o, i) => print('', `  ${i + 1}) ${o.t}`)); promptStr = 'choose 1-3 › '; }
+      function finish() {
+        const all = total + later; const rank = all <= 12 ? 'senior engineer. hire yourself.' : all <= 30 ? 'solid on-call. the runbook helped.' : all <= 60 ? 'L1 escalation theater.' : 'this is why we exist. type book.';
+        print('', ''); print('w', `resolved · ${total} minutes of downtime${later ? ` · +${later} later` : ''}`); findings.forEach(f => print('warn', '  finding: ' + f)); print('ok', 'rank: ' + rank); print('dim', 'again: incident · shell: any command');
+        game = null; promptStr = '$ ';
+      }
+      game = {
+        line(cmd) { const n = parseInt(cmd, 10), st = sc.steps[step]; if (!(n >= 1 && n <= st.opts.length)) { print('err', 'type 1, 2 or 3'); return; } const o = st.opts[n - 1]; total += o.m; if (o.later) later += o.later; if (o.f) findings.push(o.f); print(o.m <= 5 ? 'ok' : o.m <= 15 ? 'warn' : 'err', `  ${o.r} (+${o.m} min)`); step++; if (step < sc.steps.length) { print('', ''); show(); } else finish(); },
+        quit(silent) { game = null; promptStr = '$ '; if (!silent) print('dim', 'incident abandoned. it is still down, by the way.'); renderLive(); }
+      };
+      show();
+    }
     function run(cmd) {
+      if (game && game.line) { print('', promptStr + cmd); game.line(cmd); return; }
       const parts = cmd.trim().split(/\s+/), name = (parts[0] || '').toLowerCase(), arg = parts.slice(1).join(' ');
       print('', '$ ' + cmd);
       if (!name) return;
@@ -1173,11 +1272,13 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && card.classList.contains('max')) setMax(false); });
     input.addEventListener('input', () => { buffer = input.value; renderLive(); });
     input.addEventListener('keydown', e => {
+      if (game && game.key && game.key(e)) { e.preventDefault(); return; }
       if (e.key === 'Enter') { const cmd = input.value; hist.push(cmd); hi = hist.length; input.value = ''; buffer = ''; run(cmd); if (live) renderLive(); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); if (hi > 0) { hi--; input.value = buffer = hist[hi]; renderLive(); } }
       else if (e.key === 'ArrowDown') { e.preventDefault(); if (hi < hist.length - 1) { hi++; input.value = buffer = hist[hi]; } else { hi = hist.length; input.value = buffer = ''; } renderLive(); }
-      else if (e.key === 'Escape') { CMDS.exit(); }
+      else if (e.key === 'Escape') { if (game) game.quit(); else CMDS.exit(); }
     });
+    el.addEventListener('pointerdown', e => { const b = e.target.closest('.dpad button'); if (!b || !game || !game.dir) return; e.preventDefault(); game.dir(b.dataset.d); });
     input.addEventListener('blur', () => { if (live) card.classList.remove('live'); });
     input.addEventListener('focus', () => { if (live) card.classList.add('live'); });
     document.addEventListener('keydown', e => { if (e.key === '/' && !e.metaKey && !e.ctrlKey && document.activeElement !== input && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) { e.preventDefault(); document.querySelector('#top').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); enter(); input.focus(); } });
@@ -1391,7 +1492,7 @@
   })();
   (function () {
     if (reduce) return; const copy = $('.hero-copy'), dock = $('.term-dock'); if (!copy) return;
-    window.addEventListener('scroll', () => { const y = window.scrollY; if (y > window.innerHeight) return; copy.style.transform = `translateY(${y * .12}px)`; copy.style.opacity = 1 - y / (window.innerHeight * .9); if (dock) dock.style.opacity = 1 - y / (window.innerHeight * .7); }, { passive: true });
+    window.addEventListener('scroll', () => { const y = window.scrollY; if (y > window.innerHeight) return; copy.style.transform = `translateY(${y * .12}px)`; copy.style.opacity = 1 - y / (window.innerHeight * .9); if (dock && window.innerWidth > 960) dock.style.opacity = 1 - y / (window.innerHeight * .7); }, { passive: true });
   })();
 
   /* ---------- COPY EMAIL ---------- */
