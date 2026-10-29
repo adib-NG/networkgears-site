@@ -142,7 +142,7 @@
     .proof span { display: block; font-size: 12.5px; color: var(--fog-2); margin-top: 6px; }
     .hero-hint { position: absolute; right: var(--gutter); top: 96px; z-index: 1; font-family: var(--mono); font-size: 11.5px; color: var(--fog-2); display: flex; gap: 14px; pointer-events: none; }
     .hero-hint b { color: var(--cyan); font-weight: 500; }
-    .hero-shape { position: absolute; left: var(--gutter); bottom: 48px; z-index: 1; font-family: var(--mono); font-size: 11.5px; color: var(--fog-2); pointer-events: none; }
+    .hero-shape { position: absolute; left: var(--gutter); bottom: 104px; z-index: 1; font-family: var(--mono); font-size: 11.5px; color: var(--fog-2); pointer-events: none; }
     .hero-shape b { color: var(--white); font-weight: 500; }
 
     /* terminal */
@@ -1502,5 +1502,10 @@
   })();
 })();
 </script>
+<!-- Quincer Chat Widget -->
+<script>
+  window.ChatWidgetConfig = { apiKey: "cw_live_70f69f51dcefa7ce3a29ad36846ba20827e5ceb1ba27d32f", apiUrl: "https://chat.quincer.com/api" };
+</script>
+<script src="https://chat.quincer.com/api/embed/widget.js" defer></script>
 </body>
 </html>
