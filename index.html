@@ -532,7 +532,7 @@
       <div class="proof" aria-label="Experience">
         <div><b data-count="20" data-suffix="+">20+</b><span>years in infrastructure</span></div>
         <div><b data-count="80" data-suffix="+">80+</b><span>businesses supported</span></div>
-        <div><b data-count="45">45</b><span>countries delivered</span></div>
+        <div><b data-count="45" data-suffix="+">45+</b><span>countries delivered</span></div>
       </div>
     </div>
   </div>
@@ -720,8 +720,8 @@
   <div class="wrap globe-grid">
     <div>
       <div class="kicker">Where we work</div>
-      <h2 class="wipe">Based in Southern California. Delivered in 45 countries.</h2>
-      <p class="lede rise">Multi-site rollouts, hardware procurement across borders, and continuity planning for teams that do not all sit in one building. Drag the globe, or pick a city to see a route.</p>
+      <h2 class="wipe">Based in San Diego, CA. Delivered in over 45 countries.</h2>
+      <p class="lede rise"><strong style="color:var(--white);font-weight:600">Local support, global reach.</strong> Multi-site rollouts, hardware procurement across borders, and continuity planning for teams that do not all sit in one building. Drag the globe, or pick a city to see a route.</p>
       <ul class="cities" id="cities" aria-label="Example delivery locations"></ul>
       <div class="route" id="route" aria-live="polite"></div>
       <div class="pillars">
@@ -1134,7 +1134,7 @@
     const CMDS = {
       help: () => { print('w', 'commands'); print('', '  help        this list'); print('', '  stack       what we build'); print('', '  where       where we deliver'); print('', '  how         ways to engage'); print('', '  book        email us for a free review'); print('', '  go <name>   jump to a section (stack, sketch, where, why, how, book)'); print('', '  shape <n>   morph the hero (1-6)'); print('', '  size s|m|l   resize this window, max for full screen'); print('', '  uptime, whoami, ls, cat readme, clear, exit'); },
       stack: () => { ['identity and access', 'network design', 'compute and storage', 'cloud and migration', 'devices and endpoints', 'security and compliance', 'automation and operations'].forEach((l, i) => print('', '  L' + (i + 1) + '  ' + l)); print('dim', '  each one designed, built, documented, handed off'); },
-      where: () => { print('', 'based in San Diego, California'); print('', 'delivered in 45 countries. recent: Las Vegas, Washington DC, São Paulo, London, Frankfurt, Dubai, Singapore, Tokyo, Sydney'); },
+      where: () => { print('', 'based in San Diego, CA. local support, global reach.'); print('', 'delivered in over 45 countries. recent: Las Vegas, Washington DC, São Paulo, London, Frankfurt, Dubai, Singapore, Tokyo, Sydney'); },
       how: () => { print('', '  hourly consulting     a specific problem or a second opinion'); print('', '  fixed-scope project   a defined outcome with a deadline'); print('', '  managed services      we keep running what we built'); print('', '  service package       predictable improvement, predictable cost'); },
       book: () => { print('ok', 'opening your mail client...'); setTimeout(() => { window.location.href = 'mailto:hello@networkgears.com?subject=Free%20infrastructure%20review'; }, 400); },
       contact: () => CMDS.book(), email: () => CMDS.book(),
