@@ -579,6 +579,89 @@
       .t-size { margin-left: 6px; }
       .t-size button { padding: 5px; }
     }
+    /* Resilience lab: a local, illustrative network simulation. */
+    #resilience { --lab-mint:#8af3ce; --lab-red:#ff7d8e; --lab-amber:#f5cf83; background:#080f19; border-block:1px solid var(--line); }
+    .lab-heading { display:flex; justify-content:space-between; align-items:end; gap:30px; margin-bottom:36px; }
+    .lab-heading h2 { max-width:19ch; }
+    .lab-heading h2 span { color:var(--lab-mint); }
+    .lab-heading .lede { max-width:40ch; font-size:16px; }
+    .lab { border:1px solid #8af3ce30; border-radius:24px; overflow:hidden; background:#0c1521; box-shadow:0 30px 100px #0005; }
+    .lab-top { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:18px 24px; border-bottom:1px solid var(--line); background:#ffffff02; }
+    .lab-title { font:11px var(--mono); letter-spacing:.1em; color:#bfcedd; text-transform:uppercase; }
+    .lab-title span { color:var(--lab-mint); margin-right:12px; }
+    .lab-mode { display:flex; align-items:center; gap:12px; font-size:12px; color:#c3d0df; }
+    .lab-switch { display:inline-flex; gap:7px; align-items:center; cursor:pointer; }
+    .lab-switch input { accent-color:var(--lab-mint); width:17px; height:17px; }
+    .lab-layout { display:grid; grid-template-columns:minmax(0,1fr) 290px; }
+    .lab-scene { position:relative; padding:22px 24px 0; background:radial-gradient(ellipse at 50% 50%,#1a494c33,transparent 65%),radial-gradient(#a0c5d312 .8px,transparent .8px); background-size:auto,20px 20px; min-width:0; }
+    .lab-signal { display:flex; justify-content:space-between; align-items:center; gap:12px; font:10px var(--mono); color:var(--fog-2); letter-spacing:.05em; }
+    .lab-signal b { font-weight:500; color:var(--lab-mint); display:flex; align-items:center; gap:8px; }
+    .lab-signal b::before { content:''; width:6px; height:6px; background:currentColor; border-radius:50%; box-shadow:0 0 12px currentColor; }
+    .lab svg { max-height:330px; width:100%; height:auto; overflow:visible; margin:8px 0 0; }
+    .lab-wire { fill:none; stroke:#335365; stroke-width:2; }
+    .lab-packet { fill:none; stroke:var(--lab-mint); stroke-width:3; stroke-linecap:round; stroke-dasharray:3 30; animation:lab-flow 1.8s linear infinite; filter:drop-shadow(0 0 4px #8af3ce99); }
+    @keyframes lab-flow { to { stroke-dashoffset:-66; } }
+    .lab-secondary .lab-wire { stroke-dasharray:5 6; }
+    .lab-secondary .lab-packet { opacity:0; }
+    .lab-node rect { fill:#111f2e; stroke:#375362; stroke-width:1.2; }
+    .lab-node .lab-icon { fill:none; stroke:#b7d2df; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .lab-node text { fill:#e8f2f7; font:500 15px var(--font); text-anchor:middle; }
+    .lab-node .lab-sub { fill:#8fa8bb; font:10px var(--mono); }
+    .lab-node .lab-led { fill:var(--lab-mint); }
+    .lab-node .lab-halo { fill:none; stroke:#8af3ce22; stroke-width:1; }
+    .lab-path-label { fill:#8fa8bb; font:10px var(--mono); text-anchor:middle; letter-spacing:.08em; }
+    .lab-cut { opacity:0; }
+    .lab-cut circle { fill:#351a28; stroke:var(--lab-red); }
+    .lab-cut path { fill:none; stroke:var(--lab-red); stroke-width:2; }
+    .lab[data-phase="1"] .lab-primary .lab-wire, .lab[data-phase="2"] .lab-primary .lab-wire, .lab[data-phase="3"] .lab-primary .lab-wire { stroke:#ff7d8e70; stroke-dasharray:5 7; }
+    .lab:not([data-phase="0"]) .lab-primary .lab-packet { opacity:0; }
+    .lab:not([data-phase="0"]) .lab-cut { opacity:1; }
+    .lab:not([data-phase="0"]) .lab-carrier-a rect { fill:#271b29; stroke:#ff7d8e80; }
+    .lab:not([data-phase="0"]) .lab-carrier-a .lab-led { fill:var(--lab-red); }
+    .lab[data-phase="1"] .lab-signal b, .lab[data-phase="2"] .lab-signal b { color:var(--lab-amber); }
+    .lab[data-phase="1"] .lab-local .lab-packet, .lab[data-phase="2"] .lab-local .lab-packet { animation-duration:5s; stroke:var(--lab-amber); }
+    .lab[data-phase="2"][data-backup="true"] .lab-secondary .lab-wire { stroke:var(--lab-amber); }
+    .lab[data-phase="3"][data-backup="true"] .lab-secondary .lab-packet { opacity:1; }
+    .lab[data-phase="3"][data-backup="true"] .lab-secondary .lab-wire { stroke:#8af3ce70; stroke-dasharray:none; }
+    .lab[data-phase="3"][data-backup="true"] .lab-carrier-b rect { fill:#12302d; stroke:#8af3ce90; }
+    .lab[data-backup="false"] .lab-secondary, .lab[data-backup="false"] .lab-carrier-b { opacity:.25; }
+    .lab[data-phase="3"][data-backup="false"] .lab-local .lab-packet { opacity:0; }
+    .lab[data-phase="3"][data-backup="false"] .lab-signal b { color:var(--lab-red); }
+    .lab[data-phase="3"][data-backup="false"] .lab-cloud rect { stroke:#ff7d8e80; }
+    .lab-paused .lab-packet, .lab-offscreen .lab-packet { animation-play-state:paused; }
+    .lab-readouts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-top:1px solid var(--line); margin-top:0; }
+    .lab-readouts div { padding:18px 14px; min-width:0; }
+    .lab-readouts div + div { border-left:1px solid var(--line); }
+    .lab-readouts dt { font:9px var(--mono); text-transform:uppercase; letter-spacing:.08em; color:#8fa8bb; margin-bottom:8px; }
+    .lab-readouts dd { font-size:13px; color:#d4e6ec; }
+    .lab-console { padding:24px 22px; border-left:1px solid var(--line); background:#070e18aa; display:flex; flex-direction:column; }
+    .lab-console-title { display:flex; justify-content:space-between; font:10px var(--mono); color:#8fa8bb; letter-spacing:.07em; padding-bottom:18px; border-bottom:1px solid var(--line); }
+    .lab-console-title span:last-child { color:var(--lab-mint); }
+    .lab-events { list-style:none; display:grid; gap:22px; padding:24px 0; }
+    .lab-events li { display:grid; grid-template-columns:26px 1fr; gap:10px; opacity:.35; }
+    .lab-events li.reached { opacity:1; }
+    .lab-events li > span { font:10px var(--mono); color:var(--lab-mint); padding-top:3px; }
+    .lab-events b { display:block; font-size:12px; color:#e1edf2; font-weight:500; }
+    .lab-events p { font-size:11px; color:#99adbf; margin-top:4px; line-height:1.65; }
+    .lab-events .current > span { color:var(--lab-amber); }
+    .lab-console-note { margin-top:auto; color:#8fa8bb; font:10px/1.7 var(--mono); }
+    .lab-controls { padding:16px 24px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; align-items:center; gap:12px; background:#ffffff02; }
+    .lab-break { background:#ff7d8e; color:#1a0c14; box-shadow:0 0 28px #ff7d8e15; }
+    .lab-break:hover { background:#ff9eaa; box-shadow:0 0 32px #ff7d8e35; }
+    .lab button:disabled { opacity:.4; cursor:default; transform:none; }
+    .lab-small { padding:11px 14px; border:1px solid var(--line-2); border-radius:9px; font-size:12px; min-height:42px; }
+    .lab-small:hover:enabled { background:#ffffff07; }
+    .lab-controls .lab-step { margin-left:auto; }
+    .lab-explain { display:grid; grid-template-columns:1fr auto; gap:24px; margin-top:22px; align-items:center; }
+    .lab-explain p { color:#a5b8c8; font-size:13px; max-width:78ch; }
+    .lab-explain a { font-size:13px; color:var(--lab-mint); text-underline-offset:5px; }
+    .lab-status { min-height:55px; padding:16px 24px; border-top:1px solid var(--line); color:#bfd3de; font-size:13px; line-height:1.7; }
+    .lab-sim { display:inline-block; border:1px solid #8af3ce35; border-radius:6px; padding:5px 9px; font:9px var(--mono); color:#a2c1c3; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; }
+    @media(max-width:1100px) { .lab-layout { grid-template-columns:minmax(0,1fr) 250px; } }
+    @media(max-width:820px) { .lab-heading { display:block; } .lab-heading .lede { max-width:52ch; } .lab-layout { grid-template-columns:1fr; } .lab-console { border-left:0; border-top:1px solid var(--line); } .lab-events { grid-template-columns:repeat(2,minmax(0,1fr)); } .lab-console-note { display:none; } .lab-explain { grid-template-columns:1fr; gap:12px; } }
+    @media(max-width:520px) { .lab { border-radius:16px; } .lab-top { align-items:start; padding:16px; flex-direction:column; gap:12px; } .lab-mode { width:100%; justify-content:space-between; } .lab-scene { padding:18px 8px 0; } .lab-signal { padding-inline:8px; font-size:8px; } .lab-signal > span { display:none; } .lab-readouts div { padding:14px 8px; } .lab-readouts dd { font-size:11px; } .lab-readouts dt { font-size:8px; letter-spacing:0; } .lab-controls { padding:16px; gap:8px; } .lab-break { width:100%; justify-content:center; } .lab-small { padding:10px 12px; } .lab-status { padding:16px; } .lab-console { padding:20px 16px; } .lab-events { gap:18px 12px; } .lab-events li { grid-template-columns:18px 1fr; gap:6px; } }
+    @media(max-width:520px) { .lab svg { max-height:none; } }
+    @media(prefers-reduced-motion:reduce) { .lab-packet { animation:none !important; stroke-dasharray:6 10; } }
   </style>
 </head>
 <body>
@@ -601,6 +684,7 @@
   <a href="#top" data-l="Top" aria-label="Top"></a>
   <a href="#stack" data-l="What we build" aria-label="What we build"></a>
   <a href="#sketch" data-l="Sketch it" aria-label="Sketch it"></a>
+  <a href="#resilience" data-l="Resilience lab" aria-label="Resilience lab"></a>
   <a href="#global" data-l="Where we work" aria-label="Where we work"></a>
   <a href="#why" data-l="Why us" aria-label="Why us"></a>
   <a href="#how" data-l="How we work" aria-label="How we work"></a>
@@ -829,9 +913,63 @@
       <div class="sk-board tilt spot-b">
         <div class="blueprint-label">Your environment / blueprint</div>
         <svg id="sk-svg" viewBox="0 0 800 480" role="img" aria-label="Architecture sketch of your environment"></svg>
-        <div class="sk-foot"><span id="sk-cap"></span><span class="dim">live sketch, not to scale</span></div>
+        <div class="sk-foot"><span id="sk-cap"></span><a href="#resilience" style="color:var(--cyan);text-underline-offset:4px">Test a failure scenario ↗</a></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- RESILIENCE LAB -->
+<section id="resilience" class="section" aria-labelledby="lab-heading">
+  <div class="wrap">
+    <div class="lab-heading">
+      <div><div class="kicker">The resilience lab / 01</div><h2 id="lab-heading">Break it.<br><span>Watch it recover.</span></h2></div>
+      <p class="lede">An internet connection goes down. Does your business go with it? Cut the primary link and see what a second path changes.</p>
+    </div>
+    <div class="lab" id="lab" data-phase="0" data-backup="true">
+      <div class="lab-top"><div class="lab-title"><span aria-hidden="true">◈</span> Edge network / failover</div><div class="lab-mode"><label class="lab-switch"><input type="checkbox" id="lab-backup" checked>Backup link</label><span class="lab-sim">Interactive simulation</span></div></div>
+      <div class="lab-controls">
+        <button type="button" class="btn lab-break" id="lab-break"><span aria-hidden="true">ϟ</span>Cut primary link</button>
+        <button type="button" class="lab-small" id="lab-reset">Reset</button>
+        <button type="button" class="lab-small" id="lab-pause" aria-pressed="false">Pause</button>
+        <button type="button" class="lab-small lab-step" id="lab-next">Next step <span aria-hidden="true">→</span></button>
+      </div>
+      <div class="lab-layout">
+        <div class="lab-scene">
+          <div class="lab-signal"><b id="lab-signal">Primary route healthy</b><span>SAMPLE TOPOLOGY · NOT LIVE TELEMETRY</span></div>
+          <svg viewBox="0 0 760 380" role="img" aria-labelledby="lab-svg-title lab-svg-desc">
+            <title id="lab-svg-title">A sample office with two internet connections</title><desc id="lab-svg-desc">Traffic travels from an office through its edge gateway and primary carrier to cloud apps. A separate backup carrier provides an alternative path.</desc>
+            <defs><pattern id="lab-grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#8af3ce" stroke-opacity=".035"/></pattern></defs>
+            <rect width="760" height="380" fill="url(#lab-grid)"/>
+            <g class="lab-local"><path class="lab-wire" d="M140 190H250"/><path class="lab-packet" d="M140 190H250"/></g>
+            <g class="lab-primary"><path class="lab-wire" d="M350 170C405 170 385 80 455 80M575 80C635 80 605 170 650 170"/><path class="lab-packet" d="M350 170C405 170 385 80 455 80M575 80C635 80 605 170 650 170"/></g>
+            <g class="lab-secondary"><path class="lab-wire" d="M350 210C405 210 385 300 455 300M575 300C635 300 605 210 650 210"/><path class="lab-packet" d="M350 210C405 210 385 300 455 300M575 300C635 300 605 210 650 210"/></g>
+            <text class="lab-path-label" x="515" y="27">PRIMARY PATH</text><text class="lab-path-label" x="515" y="365">INDEPENDENT BACKUP PATH</text>
+            <g class="lab-node" transform="translate(20 140)"><rect width="120" height="100" rx="14"/><path class="lab-icon" d="M48 31V15h24v16M44 32h32M54 21h3m6 0h3m-12 5h3m6 0h3"/><text x="60" y="57">Your office</text><text class="lab-sub" x="60" y="78">TEAM + DEVICES</text><circle class="lab-led" cx="104" cy="14" r="3"/></g>
+            <g class="lab-node" transform="translate(250 140)"><rect class="lab-halo" x="-8" y="-8" width="116" height="116" rx="22"/><rect width="100" height="100" rx="14"/><path class="lab-icon" d="M35 18h30v14H35zM40 25h2m5 0h2m5 0h5"/><text x="50" y="57">Gateway</text><text class="lab-sub" x="50" y="78">ROUTE CONTROL</text><circle class="lab-led" cx="84" cy="14" r="3"/></g>
+            <g class="lab-node lab-carrier-a" transform="translate(455 42)"><rect width="120" height="76" rx="13"/><text x="60" y="33">Carrier A</text><text class="lab-sub" id="lab-a" x="60" y="55">ACTIVE</text><circle class="lab-led" cx="105" cy="13" r="3"/></g>
+            <g class="lab-node lab-carrier-b" transform="translate(455 262)"><rect width="120" height="76" rx="13"/><text x="60" y="33">Carrier B</text><text class="lab-sub" id="lab-b" x="60" y="55">STANDBY</text><circle class="lab-led" cx="105" cy="13" r="3"/></g>
+            <g class="lab-node lab-cloud" transform="translate(650 140)"><rect width="100" height="100" rx="14"/><path class="lab-icon" d="M37 32a6 6 0 0 1 0-12 10 10 0 0 1 19-2 7 7 0 0 1 5 14Z"/><text x="50" y="57">Cloud apps</text><text class="lab-sub" x="50" y="78">WORK CONTINUES</text></g>
+            <g class="lab-cut" transform="translate(403 126)"><circle r="14"/><path d="m-4-4 8 8m0-8-8 8"/></g>
+          </svg>
+          <dl class="lab-readouts"><div><dt>Primary connection</dt><dd id="lab-primary">Healthy</dd></div><div><dt>Traffic route</dt><dd id="lab-route">Carrier A</dd></div><div><dt>App access</dt><dd id="lab-apps">Available</dd></div></dl>
+        </div>
+        <aside class="lab-console" aria-label="Simulation event sequence">
+          <div class="lab-console-title"><span>EVENT SEQUENCE</span><span id="lab-count">00 / 03</span></div>
+          <ol class="lab-events" id="lab-events">
+            <li class="reached current"><span>00</span><div><b>Ready for the unexpected</b><p>The primary carries traffic. The backup waits.</p></div></li>
+            <li><span>01</span><div><b>Primary link lost</b><p>A carrier outage interrupts the active path.</p></div></li>
+            <li><span>02</span><div><b id="lab-event2-title">Find another way</b><p id="lab-event2-body">The gateway checks the backup route.</p></div></li>
+            <li><span>03</span><div><b id="lab-event3-title">Traffic restored</b><p id="lab-event3-body">Apps are reachable over the independent link.</p></div></li>
+          </ol>
+          <p class="lab-console-note">DESIGNED FOR THE FAILURE.<br>NOT JUST THE HAPPY PATH.</p>
+        </aside>
+      </div>
+      <div class="lab-status" id="lab-status" role="status" aria-live="polite" aria-atomic="true">Two carriers. Two paths. Cut the primary connection to start the simulation.</div>
+
+    </div>
+    <div class="lab-explain"><p>Illustrative demo, not a recovery-time promise. Real failover depends on carrier diversity, health checks, routing, and application sessions. Turn off the backup link and run it again to see the difference.</p><a href="#sketch">Design your environment ↗</a></div>
+    <noscript><p>This demo needs JavaScript. With an independent backup connection, a gateway can reroute traffic after the primary fails. With one connection, app access waits for the carrier to recover.</p></noscript>
   </div>
 </section>
 
@@ -993,7 +1131,7 @@
     // active section: nav + rail
     const navLinks = $$('#links a[href^="#"]'), railLinks = $$('.rail a');
     const io = new IntersectionObserver(en => en.forEach(e => { if (!e.isIntersecting) return; const id = '#' + e.target.id; navLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === id)); railLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === id || (id === '#hero' && a.getAttribute('href') === '#top'))); }), { rootMargin: '-40% 0px -55% 0px' });
-    ['hero', 'stack', 'sketch', 'global', 'why', 'how', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
+    ['hero', 'stack', 'sketch', 'resilience', 'global', 'why', 'how', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
   })();
 
   /* ---------- CURSOR GLOW (native cursor stays visible) ---------- */
@@ -1615,6 +1753,103 @@
     b.addEventListener('click', async () => { try { await navigator.clipboard.writeText('hello@networkgears.com'); toast.textContent = 'Copied hello@networkgears.com'; } catch (e) { toast.textContent = 'hello@networkgears.com'; } toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2200); });
   })();
 })();
+</script>
+<script>
+/* Resilience lab: deterministic phases, no requests or real network changes. */
+(function () {
+  const root = document.getElementById('lab');
+  if (!root) return;
+  const get = id => document.getElementById('lab-' + id);
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let phase = 0, backup = true, paused = motion.matches, visible = false, timer = null;
+  function clearTimer() { if (timer !== null) clearTimeout(timer); timer = null; }
+  function schedule() {
+    clearTimer();
+    if (phase > 0 && phase < 3 && !paused && visible && !document.hidden) timer = setTimeout(() => { phase++; render(); }, 2200);
+  }
+  function render() {
+    root.dataset.phase = phase;
+    root.dataset.backup = backup;
+    root.classList.toggle('lab-paused', paused);
+    root.classList.toggle('lab-offscreen', !visible || document.hidden);
+    const signals = ['Primary route healthy', 'Primary connection lost', backup ? 'Checking alternate route' : 'No alternate route', backup ? 'Recovered on backup' : 'Waiting for carrier recovery'];
+    const messages = backup ? [
+      'Two carriers. Two paths. Cut the primary connection to start the simulation.',
+      'The primary link has failed. Cloud app access is interrupted while the gateway detects the loss.',
+      'The gateway validates Carrier B and selects the independent backup path.',
+      'Traffic now flows through Carrier B. The primary is still down, but cloud app access is restored. Some sessions may need to reconnect.'
+    ] : [
+      'One carrier. One path. Cut the primary connection to see what happens without a backup.',
+      'The primary link has failed. Cloud app access is interrupted.',
+      'The gateway has no alternate internet connection to select.',
+      'The office network still works locally, but cloud apps remain unreachable until the carrier returns. Reset, enable the backup, and compare.'
+    ];
+    get('signal').textContent = signals[phase];
+    get('status').textContent = messages[phase];
+    get('primary').textContent = phase ? 'Link down' : 'Healthy';
+    get('route').textContent = !phase ? 'Carrier A' : phase === 3 && backup ? 'Carrier B' : 'No active path';
+    get('apps').textContent = !phase ? 'Available' : phase === 3 ? backup ? 'Restored' : 'Unavailable' : 'Interrupted';
+    get('a').textContent = phase ? 'LINK DOWN' : 'ACTIVE';
+    get('b').textContent = !backup ? 'NOT INSTALLED' : phase === 3 ? 'ACTIVE' : phase === 2 ? 'VALIDATING' : 'STANDBY';
+    root.querySelector('.lab-cloud .lab-sub').textContent = !phase || phase === 3 && backup ? 'APPS REACHABLE' : 'NO APP ACCESS';
+    get('event2-title').textContent = backup ? 'Find another way' : 'No second path';
+    get('event2-body').textContent = backup ? 'The gateway checks the backup route.' : 'There is no other carrier to route through.';
+    get('event3-title').textContent = backup ? 'Traffic restored' : 'Still disconnected';
+    get('event3-body').textContent = backup ? 'Apps are reachable over the independent link.' : 'Cloud access waits for carrier recovery.';
+    get('events').querySelector('li p').textContent = backup ? 'The primary carries traffic. The backup waits.' : 'The primary is the only way to the internet.';
+    get('events').querySelectorAll('li').forEach((li, i) => { li.classList.toggle('reached', i <= phase); li.classList.toggle('current', i === phase); if (i === phase) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
+    get('count').textContent = '0' + phase + ' / 03';
+    get('break').disabled = phase !== 0;
+    get('next').disabled = phase === 3;
+    get('pause').textContent = paused ? 'Play' : 'Pause';
+    get('pause').setAttribute('aria-pressed', String(paused));
+    get('pause').setAttribute('aria-label', paused ? 'Play simulation animation' : 'Pause simulation animation');
+    document.getElementById('lab-svg-desc').textContent = signals[phase] + '. ' + messages[phase];
+    schedule();
+  }
+  get('break').addEventListener('click', () => { phase = 1; render(); });
+  get('reset').addEventListener('click', () => { phase = 0; render(); });
+  get('backup').addEventListener('change', e => { backup = e.target.checked; phase = 0; render(); });
+  get('pause').addEventListener('click', () => { paused = !paused; render(); });
+  get('next').addEventListener('click', () => { paused = true; phase = Math.min(3, phase + 1); render(); });
+  motion.addEventListener('change', e => { if (e.matches) { paused = true; render(); } });
+  document.addEventListener('visibilitychange', render);
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; root.classList.toggle('lab-offscreen', !visible || document.hidden); schedule(); }, {threshold:.1}).observe(root);
+  // Reflow the same topology on phones so labels stay readable.
+  const narrow = window.matchMedia('(max-width: 520px)');
+  const diagram = root.querySelector('svg');
+  const original = new Map();
+  function change(selector, attribute, value) {
+    root.querySelectorAll(selector).forEach(el => {
+      if (!original.has(el)) original.set(el, {});
+      const saved = original.get(el);
+      if (!(attribute in saved)) saved[attribute] = el.getAttribute(attribute);
+      el.setAttribute(attribute, narrow.matches ? value : saved[attribute]);
+    });
+  }
+  function layout() {
+    diagram.setAttribute('viewBox', narrow.matches ? '0 0 380 520' : '0 0 760 380');
+    change('.lab-node:not(.lab-carrier-a):not(.lab-carrier-b):not(.lab-cloud)', 'transform', 'translate(130 10)');
+    // The second node is the gateway; it shares the same desktop selectors.
+    const gateway = root.querySelectorAll('.lab-node')[1];
+    gateway.setAttribute('transform', narrow.matches ? 'translate(140 140)' : 'translate(250 140)');
+    change('.lab-carrier-a', 'transform', 'translate(30 280)');
+    change('.lab-carrier-b', 'transform', 'translate(230 280)');
+    change('.lab-cloud', 'transform', 'translate(140 410)');
+    change('.lab-local path', 'd', 'M190 110V140');
+    change('.lab-primary path', 'd', 'M140 190C90 190 90 230 90 280M90 356V430Q90 460 140 460');
+    change('.lab-secondary path', 'd', 'M240 190C290 190 290 230 290 280M290 356V430Q290 460 240 460');
+    change('.lab-cut', 'transform', 'translate(95 228)');
+    const labels = root.querySelectorAll('.lab-path-label');
+    labels[0].setAttribute('x', narrow.matches ? '90' : '515'); labels[0].setAttribute('y', narrow.matches ? '266' : '27');
+    labels[1].setAttribute('x', narrow.matches ? '290' : '515'); labels[1].setAttribute('y', narrow.matches ? '266' : '365');
+    labels[1].textContent = narrow.matches ? 'BACKUP PATH' : 'INDEPENDENT BACKUP PATH';
+  }
+  narrow.addEventListener('change', layout);
+  layout();
+  render();
+})();
+
 </script>
 <!-- Quincer Chat Widget -->
 <script>
