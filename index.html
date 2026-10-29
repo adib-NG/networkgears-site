@@ -45,7 +45,7 @@
       --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; }
+    html { scroll-behavior: smooth; scroll-padding-top: 110px; -webkit-text-size-adjust: 100%; }
     body { font-family: var(--font); background: var(--ink); color: var(--fog); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
     img, svg, canvas { display: block; max-width: 100%; }
     a { color: inherit; }
@@ -469,6 +469,116 @@
       .hero-copy h1 .u::after { transform: scaleX(1); }
       .wipe, .rise { clip-path: none; opacity: 1; transform: none; }
     }
+
+    /* October 2026 design refinement: quieter surfaces, clearer hierarchy. */
+    :root { --fog-2: #94A5BD; --panel: #101B2A; --line: rgba(161,191,211,.16); --max: 1320px; }
+    h1, h2, h3 { text-wrap: balance; }
+    #field { opacity: .38; }
+    #glow { opacity: .35; }
+    #nav { top: 16px; left: 24px; right: 24px; border: 1px solid var(--line); border-radius: 18px; background: rgba(10,17,28,.8); box-shadow: 0 12px 40px #0002; }
+    .nav-in { height: 66px; padding-inline: 24px; }
+    #progress { left: 18px; max-width: calc(100% - 36px); }
+    .links a { font-size: 13px; padding-inline: 10px; }
+    .links a.cta { border-radius: 9px; }
+    #hero { min-height: max(820px, 100svh); padding: 160px 0 134px; background: radial-gradient(ellipse at 80% 35%, #12384555, transparent 48%); }
+    #hero::before { content: ''; position: absolute; width: 42vw; height: 42vw; right: 3%; top: 15%; border: 1px solid #73d9eb12; border-radius: 50%; box-shadow: 0 0 0 45px #73d9eb03, 0 0 0 90px #73d9eb03; pointer-events: none; }
+    .hero-copy { max-width: 53%; }
+    .hero-copy h1 { font-size: clamp(44px, 5.1vw, 74px); line-height: 1.06; letter-spacing: -.052em; }
+    .hero-copy h1 .u { color: #81E9EA; }
+    .hero-copy h1 .u::after { display: none; }
+    .hero-copy > p { font-size: 17px; line-height: 1.8; max-width: 43ch; color: #AABCD0; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; font: 11px var(--mono); text-transform: uppercase; letter-spacing: .13em; color: #A8C6D4; }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: #81E9EA; border-radius: 50%; box-shadow: 0 0 0 5px #81E9EA0D; }
+    .hero-ctas { gap: 12px; margin-top: 30px; }
+    .btn { border-radius: 12px; font-size: 14px; padding: 15px 19px; }
+    .btn-solid { background: #81E9EA; box-shadow: inset 0 1px 0 #ffffff70, 0 6px 24px #22d3ee12; }
+    .btn-line { background: #0a142580; }
+    .hero-note { display: block; margin-top: 14px; color: var(--fog-2); font-size: 12px; }
+    .proof { gap: 0; width: 100%; max-width: 490px; margin-top: 32px; padding-top: 24px; }
+    .proof > div { padding-right: 20px; }
+    .proof > div + div { padding-left: 20px; border-left: 1px solid var(--line); }
+    .proof b { font-size: 32px; }
+    .proof span { font-size: 11px; max-width: 14ch; line-height: 1.6; }
+    .hero-hint { top: 114px; right: max(var(--gutter), calc((100vw - 1192px)/2)); font-size: 10px; }
+    .hero-shape { left: auto; right: var(--gutter); bottom: 22px; }
+    .term-dock { bottom: 56px; }
+    .term { width: 460px; background: rgba(12,21,34,.92); border-color: #739dad40; border-radius: 16px; box-shadow: 0 24px 80px #0006; }
+    .term-bar { background: #ffffff03; padding-block: 12px; }
+    .term-body { height: 230px; }
+    .term-bar .window-dot { width: 12px; height: 12px; border-radius: 50%; padding: 0; flex: none; }
+    #t-red { background: #F26B6B; } #t-yel { background: #F2C94C; } #t-grn { background: #4CD98A; }
+    .window-dot:hover { filter: brightness(1.25); }
+    .section { padding-block: clamp(76px, 8vw, 116px); }
+    h2 { max-width: 20ch; letter-spacing: -.045em; line-height: 1.14; }
+    .kicker { font-size: 11px; text-transform: uppercase; letter-spacing: .13em; }
+    .lede { color: #AABCD0; line-height: 1.8; }
+    .marquee { padding-block: 23px; background: #0b1320; }
+    #stack, #how { background: #0c1522e8; }
+    .stack { grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 0 36px; }
+    .layer { padding: 18px 14px; border-bottom: 1px solid #a1bfd30c; }
+    .layer[aria-selected="true"] { background: #152A37; border-color: #81E9EA40; }
+    .detail, .sk-board { border-radius: 22px; background: linear-gradient(145deg,#152734,#101a2a 65%); box-shadow: 0 20px 60px #0002; }
+    .detail li { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 12px 0; }
+    .sk-ctl { padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: #0c1522b3; }
+    .sk-board { background-image: radial-gradient(#a1bfd322 1px, transparent 1px), linear-gradient(145deg,#152734,#101a2a); background-size: 20px 20px, auto; }
+    .blueprint-label { display: block; font: 10px var(--mono); letter-spacing: .12em; color: #81E9EA; padding: 5px 8px 18px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+    .preset[aria-pressed="true"] { color: #81E9EA; background: #81E9EA12; border-color: #81E9EA80; }
+    .sk-range input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 8px; }
+    .sk-foot { padding: 12px 8px 2px; border-top: 1px solid var(--line); }
+    #global { background: radial-gradient(ellipse at 80% 50%,#12384544,transparent 55%); }
+    #why { background: #ECF0ED; }
+    #why h2 { max-width: 23ch; }
+    .why { border-radius: 20px; border-color: #cfdbd6; background: #f7faf7; }
+    .why-grid { counter-reset: commitment; gap: 18px; }
+    .why::before { counter-increment: commitment; content: '0' counter(commitment); display: block; margin-bottom: 28px; font: 12px var(--mono); color: #34706F; }
+    .seg { padding: 7px; background: #070b1444; border-color: var(--line); }
+    .model { border-radius: 22px; gap: 1px; }
+    .model > div { background: #101e2d; }
+    #contact { margin: 28px var(--gutter) 56px; border: 1px solid #81E9EA30; border-radius: 28px; background: radial-gradient(ellipse at 50% 0,#16414b99,transparent 70%),#0c1724; }
+    .cta .get div { border: 0; border-top: 1px solid #81E9EA30; border-radius: 0; background: transparent; }
+    .rail a { width: 7px; height: 7px; }
+    .rail a.on { height: 22px; border-radius: 8px; }
+    @media (min-width:1100px) {
+      .detail { grid-template-columns: minmax(0,1fr) 120px; }
+      .detail > p, .detail > ul, .detail > .tools { grid-column: 1 / -1; }
+      .detail .slabs { grid-row: 1 / span 2; width: 120px; height: 150px; transform: scale(.64); transform-origin: top left; margin: 0; }
+    }
+    @media (max-width:1100px) and (min-width:961px) { .term { width: 400px; } .links a { font-size: 12px; padding-inline: 7px; } }
+    @media (max-width:960px) {
+      #hero { min-height: auto; padding: 146px 0 52px; }
+      .hero-copy { max-width: 640px; }
+      .hero-copy h1 { font-size: clamp(44px,7.2vw,68px); }
+      .term-dock { margin-top: 38px; }
+      #gl, #net { opacity: .3; }
+      #hero::before { display: none; }
+    }
+    @media (max-width:820px) {
+      #nav { top: 10px; left: 12px; right: 12px; border-radius: 14px; }
+      .nav-in { padding-inline: 15px; height: 60px; }
+      .links.open { top: 69px; left: 0; right: 0; border: 1px solid var(--line); border-radius: 14px; }
+      .links.open a { font-size: 15px; }
+      .stack { grid-template-columns: 1fr; }
+      .sk-ctl { padding: 22px; }
+      .detail { border-radius: 16px; }
+      #contact { margin-inline: 12px; border-radius: 22px; }
+    }
+    @media (max-width:520px) {
+      #hero { padding-top: 116px; }
+      .hero-copy h1 { font-size: clamp(35px,10.6vw,54px); }
+      .hero-eyebrow { font-size: 9px; letter-spacing: .09em; }
+      .hero-copy > p { font-size: 15px; }
+      .hero-note { text-align: center; }
+      .hero-ctas .btn { white-space: normal; }
+      .proof > div { padding-right: 10px; }
+      .proof > div + div { padding-left: 10px; }
+      .proof b { font-size: 28px; }
+      .proof span { font-size: 10px; }
+      .blueprint-label { font-size: 9px; }
+      .term-bar { gap: 6px; padding-inline: 10px; }
+      .term-bar span { font-size: 9px; }
+      .t-size { margin-left: 6px; }
+      .t-size button { padding: 5px; }
+    }
   </style>
 </head>
 <body>
@@ -488,13 +598,13 @@
 <div id="glow" aria-hidden="true"></div>
 
 <nav class="rail" aria-label="Sections">
-  <a href="#top" data-l="Top"></a>
-  <a href="#stack" data-l="What we build"></a>
-  <a href="#sketch" data-l="Sketch it"></a>
-  <a href="#global" data-l="Where we work"></a>
-  <a href="#why" data-l="Why us"></a>
-  <a href="#how" data-l="How we work"></a>
-  <a href="#contact" data-l="Book a review"></a>
+  <a href="#top" data-l="Top" aria-label="Top"></a>
+  <a href="#stack" data-l="What we build" aria-label="What we build"></a>
+  <a href="#sketch" data-l="Sketch it" aria-label="Sketch it"></a>
+  <a href="#global" data-l="Where we work" aria-label="Where we work"></a>
+  <a href="#why" data-l="Why us" aria-label="Why us"></a>
+  <a href="#how" data-l="How we work" aria-label="How we work"></a>
+  <a href="#contact" data-l="Book a review" aria-label="Book a review"></a>
 </nav>
 
 <!-- NAV -->
@@ -528,15 +638,17 @@
   <div class="hero-shape" id="hero-shape"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
+      <div class="hero-eyebrow">Independent IT expertise / San Diego + worldwide</div>
       <h1>Infrastructure <span class="u">your team</span> can run without us.</h1>
       <p>Network Gears designs, builds, and hands off the identity, network, cloud, and endpoint systems your business depends on. Secured by default. Documented so your people own it.</p>
       <div class="hero-ctas">
         <a class="btn btn-solid mag" href="mailto:hello@networkgears.com?subject=Free%20infrastructure%20review">
-          Book a free 30-minute review
+          Book a free review
           <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-line mag" href="#sketch">Sketch your environment</a>
+        <a class="btn btn-line mag" href="#sketch">Explore your setup <span aria-hidden="true">↗</span></a>
       </div>
+      <small class="hero-note">30 minutes with an engineer. A clear next step, yours to keep.</small>
       <div class="proof" aria-label="Experience">
         <div><b data-count="20" data-suffix="+">20+</b><span>years in infrastructure</span></div>
         <div><b data-count="80" data-suffix="+">80+</b><span>businesses supported</span></div>
@@ -546,7 +658,7 @@
   </div>
   <div class="wrap term-dock">
     <div class="term" id="term-card" aria-label="Interactive terminal">
-      <div class="term-bar" id="term-bar"><i id="t-red" title="Reset"></i><i id="t-yel" title="Collapse"></i><i id="t-grn" title="Maximize"></i><span class="t-size" id="t-size" aria-label="Terminal size"><button type="button" data-s="s" aria-pressed="false" title="Small">S</button><button type="button" data-s="m" aria-pressed="true" title="Medium">M</button><button type="button" data-s="l" aria-pressed="false" title="Large">L</button></span><span id="term-title">handoff.log <em>· click to type</em></span></div>
+      <div class="term-bar" id="term-bar"><button type="button" class="window-dot" id="t-red" aria-label="Reset terminal" title="Reset terminal"></button><button type="button" class="window-dot" id="t-yel" aria-label="Collapse terminal" title="Collapse terminal"></button><button type="button" class="window-dot" id="t-grn" aria-label="Maximize terminal" title="Maximize terminal"></button><span class="t-size" id="t-size" aria-label="Terminal size"><button type="button" data-s="s" aria-pressed="false" title="Small">S</button><button type="button" data-s="m" aria-pressed="true" title="Medium">M</button><button type="button" data-s="l" aria-pressed="false" title="Large">L</button></span><span id="term-title">handoff.log <em>· click to type</em></span></div>
       <div class="term-body" id="term"></div>
       <input id="term-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input">
     </div>
@@ -715,6 +827,7 @@
         <div><a class="btn btn-solid mag" id="sk-mail" href="mailto:hello@networkgears.com">Email us this sketch <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div>
       </div>
       <div class="sk-board tilt spot-b">
+        <div class="blueprint-label">Your environment / blueprint</div>
         <svg id="sk-svg" viewBox="0 0 800 480" role="img" aria-label="Architecture sketch of your environment"></svg>
         <div class="sk-foot"><span id="sk-cap"></span><span class="dim">live sketch, not to scale</span></div>
       </div>
@@ -1257,17 +1370,17 @@
       if (!name) return;
       if (CMDS[name]) CMDS[name](arg); else print('err', `command not found: ${name}. try help`);
     }
-    card.addEventListener('click', e => { if (e.target.closest('.term-bar i, .t-size')) return; enter(); input.focus(); });
+    card.addEventListener('click', e => { if (e.target.closest('.window-dot, .t-size')) return; enter(); input.focus(); });
     /* size presets, maximize, collapse, reset */
     const bar = $('#term-bar'), scrim = $('#term-scrim'), body = el;
-    const SIZES = { s: [420, 200], m: [520, 300], l: [700, 440] };
+    const SIZES = { s: [420, 200], m: [460, 230], l: [700, 440] };
     function setSize(k) { const [w, h] = SIZES[k]; card.style.width = Math.min(w, window.innerWidth - 40) + 'px'; body.style.height = Math.min(h, window.innerHeight * 0.7) + 'px'; $$('#t-size button').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === k)); card.classList.remove('min'); body.scrollTop = body.scrollHeight; }
     $$('#t-size button').forEach(b => b.addEventListener('click', () => setSize(b.dataset.s)));
     function setMax(on) { card.classList.toggle('max', on); card.classList.remove('min'); scrim.classList.toggle('on', on); card.closest('.term-dock').classList.toggle('max', on); if (on) { enter(); input.focus(); } body.scrollTop = body.scrollHeight; }
     $('#t-grn').addEventListener('click', () => setMax(!card.classList.contains('max')));
     $('#t-yel').addEventListener('click', () => { if (card.classList.contains('max')) setMax(false); card.classList.toggle('min'); });
     $('#t-red').addEventListener('click', () => { setMax(false); setSize('m'); if (live) CMDS.exit(); });
-    bar.addEventListener('dblclick', e => { if (e.target.tagName === 'I') return; setMax(!card.classList.contains('max')); });
+    bar.addEventListener('dblclick', e => { if (e.target.closest('button')) return; setMax(!card.classList.contains('max')); });
     scrim.addEventListener('click', () => setMax(false));
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && card.classList.contains('max')) setMax(false); });
     input.addEventListener('input', () => { buffer = input.value; renderLive(); });
@@ -1340,7 +1453,9 @@
       g += `<text x="${x + w - 12}" y="${y + 82}" text-anchor="end" class="sk-s">${aps} AP${aps > 1 ? 's' : ''}</text></g>`;
       return g;
     }
+    const PRESETS = { startup: { sites: 1, people: 25, remote: true, onprem: false, cloud: true, compliance: false, mac: true, win: false }, law: { sites: 2, people: 40, remote: false, onprem: true, cloud: true, compliance: true, mac: false, win: true }, retail: { sites: 6, people: 220, remote: false, onprem: true, cloud: true, compliance: false, mac: false, win: true }, saas: { sites: 1, people: 80, remote: true, onprem: false, cloud: true, compliance: true, mac: true, win: false } };
     function build() {
+      $$('#presets .preset').forEach(b => b.setAttribute('aria-pressed', Object.entries(PRESETS[b.dataset.p]).every(([k, v]) => S[k] === v)));
       const pps = Math.max(1, Math.round(S.people / S.sites)), k = Math.min(S.sites, 6), extra = S.sites - k;
       let g = '';
       g += box(320, 24, 160, 46, 'Identity', 'SSO + MFA, one directory', 'hub');
@@ -1374,7 +1489,6 @@
     }
     function range(inp, out, key) { const upd = () => { S[key] = +inp.value; out.textContent = inp.value; inp.style.setProperty('--p', ((inp.value - inp.min) / (inp.max - inp.min) * 100) + '%'); build(); }; inp.addEventListener('input', upd); upd(); }
     range(iS, oS, 'sites'); range(iP, oP, 'people');
-    const PRESETS = { startup: { sites: 1, people: 25, remote: true, onprem: false, cloud: true, compliance: false, mac: true, win: false }, law: { sites: 2, people: 40, remote: false, onprem: true, cloud: true, compliance: true, mac: false, win: true }, retail: { sites: 6, people: 220, remote: false, onprem: true, cloud: true, compliance: false, mac: false, win: true }, saas: { sites: 1, people: 80, remote: true, onprem: false, cloud: true, compliance: true, mac: true, win: false } };
     $$('#presets .preset').forEach(b => b.addEventListener('click', () => { const P = PRESETS[b.dataset.p]; Object.assign(S, P); iS.value = P.sites; iP.value = P.people; oS.textContent = P.sites; oP.textContent = P.people; [iS, iP].forEach(inp => inp.style.setProperty('--p', ((inp.value - inp.min) / (inp.max - inp.min) * 100) + '%')); $$('#sk-tog .tog').forEach(t => t.setAttribute('aria-pressed', !!S[t.dataset.k])); build(); }));
     $$('#sk-tog .tog').forEach(b => b.addEventListener('click', () => { const k = b.dataset.k; S[k] = !S[k]; if (k === 'mac' && !S.mac && !S.win) { S.win = true; $('#sk-tog [data-k="win"]').setAttribute('aria-pressed', 'true'); } if (k === 'win' && !S.win && !S.mac) { S.mac = true; $('#sk-tog [data-k="mac"]').setAttribute('aria-pressed', 'true'); } b.setAttribute('aria-pressed', S[k]); build(); }));
   })();
